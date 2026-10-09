@@ -1,49 +1,49 @@
-# Troubleshooting report
+# 트러블슈팅 보고서
 
-This report records a reproducible **local pre-deployment configuration incident**. It is not a claim that the AWS stack was deployed. The intended path is shown in [`architecture.png`](architecture.png).
+이 보고서는 재현 가능한 **로컬 사전 배포 구성 사고**를 기록합니다. AWS 스택이 배포되었다는 의미는 아닙니다. 의도한 경로는 [`architecture.png`](architecture.png)에 나와 있습니다.
 
-## Incident: SSH could not be guaranteed by the first template draft
+## 사고: 첫 번째 템플릿 초안에서 SSH 연결을 보장할 수 없었음
 
-| Required field | Record |
+| 필수 항목 | 기록 |
 | --- | --- |
-| Symptom | The first draft described SSH access but did not pass an EC2 key pair to the instance, and its deployment helper supplied a documentation-only `203.0.113.0/32` default. A live operator could create an instance that could not be reached by SSH. |
-| Hypothesis | The instance definition lacked a `KeyName` property, while the default CIDR was not the operator's real public address. |
-| Verification | Local inspection of `infra/template.yaml`, `scripts/deploy.sh`, and `tests/test_template.py` showed no `KeyName` parameter/property and a non-routable example CIDR. The structural test suite was extended to assert the key-pair reference and the deployment script was changed to require an explicit key name and CIDR. |
-| Action | Added `KeyName` as an `AWS::EC2::KeyPair::KeyName` parameter, referenced it from `WebServer`, removed the unsafe default deployment path, and kept CIDR validation at `/16` through `/32`. |
-| Result | The local template tests pass after the change. Live SSH connectivity remains **pending** because root credentials were not used and no stack was created. |
-| Prevention | Require the key name and source CIDR as deployment inputs; review the SG and key-pair settings before deployment; capture the public IP and SSH test as live evidence before cleanup. |
+| 증상 | 첫 번째 초안은 SSH 액세스를 설명했지만 인스턴스에 EC2 키 페어를 전달하지 않았고, 배포 도우미는 문서용 `203.0.113.0/32` 기본값을 제공했습니다. 실제 운영자가 SSH로 연결할 수 없는 인스턴스를 만들 수 있는 상태였습니다. |
+| 가설 | 인스턴스 정의에 `KeyName` 속성이 없었고, 기본 CIDR도 운영자의 실제 공인 주소가 아니었습니다. |
+| 확인 | `infra/template.yaml`, `scripts/deploy.sh`, `tests/test_template.py`를 로컬에서 검사한 결과 `KeyName` 파라미터/속성이 없고 라우팅되지 않는 예시 CIDR이 사용되고 있음을 확인했습니다. 구조 테스트 모음을 확장해 키 페어 참조를 검증했으며, 배포 스크립트는 명시적인 키 이름과 CIDR을 요구하도록 변경했습니다. |
+| 조치 | `AWS::EC2::KeyPair::KeyName` 파라미터로 `KeyName`을 추가하고 `WebServer`에서 참조하도록 했습니다. 안전하지 않은 기본 배포 경로를 제거했으며 CIDR 검증 범위는 `/16`부터 `/32`까지로 유지했습니다. |
+| 결과 | 변경 후 로컬 템플릿 테스트가 통과했습니다. root 자격 증명을 사용하지 않았고 스택도 생성하지 않았으므로 라이브 SSH 연결은 여전히 **pending**입니다. |
+| 예방 | 배포 입력값으로 키 이름과 소스 CIDR을 요구하고, 배포 전에 SG와 키 페어 설정을 검토하며, 정리 전에 공인 IP와 SSH 테스트를 라이브 증거로 수집합니다. |
 
-## Live diagnostic order for an authorized run
+## 권한 있는 실행에서의 라이브 진단 순서
 
-Use the shortest boundary-first sequence and record each result:
+가장 짧은 경계 우선 순서를 사용하고 각 결과를 기록하세요.
 
-## Before diagnosing
+## 진단 전
 
-1. Record the exact timestamp, URL or public IP tested, and the observed status or error.
-2. Confirm whether the observation came from a live AWS console/request or from a local file check.
-3. Preserve the original screenshot or command output before changing anything.
-4. Mark the result as **live**, **local**, or **pending** in the evidence notes.
+1. 정확한 타임스탬프, 테스트한 URL 또는 공인 IP, 관찰된 상태나 오류를 기록합니다.
+2. 해당 관찰이 실제 AWS 콘솔/요청에서 나온 것인지, 로컬 파일 확인에서 나온 것인지 확인합니다.
+3. 무엇이든 변경하기 전에 원본 스크린샷이나 명령 출력 결과를 보존합니다.
+4. 증거 메모에서 결과를 **live**, **local** 또는 **pending**으로 표시합니다.
 
-### Symptom-to-check table
+### 증상별 확인 표
 
-| Symptom | Likely boundary | Checks to perform in an authorized live environment |
+| 증상 | 가능성이 높은 경계 | 권한 있는 라이브 환경에서 수행할 확인 |
 | --- | --- | --- |
-| No public address is available | EC2/subnet addressing | Confirm the instance is in the intended public subnet and has a public IPv4 address or reachable public endpoint. |
-| Request times out | Route, IGW, SG, network ACL, or instance | Confirm the subnet route table has a default route to the IGW, the IGW is attached to the VPC, and the SG/NACL rules allow the intended HTTP path. |
-| Connection is refused | EC2 or Nginx process | Confirm the instance is running, Nginx is installed and active, and a listener is bound to the expected port. |
-| HTTP 403/404 is returned | Nginx configuration/content | Check the active server block, document root, file permissions, and the requested path. |
-| HTTP 502/503 is returned | Nginx upstream configuration | Check whether the configuration expects an upstream application that is not running; a static Nginx page should not require one. |
-| The console and screenshot disagree | Evidence capture | Recheck account/region, resource identifiers, timestamp, and whether the screenshot is live AWS evidence or a local rendering. |
+| 공인 주소를 사용할 수 없음 | EC2/서브넷 주소 지정 | 인스턴스가 의도한 퍼블릭 서브넷에 있고 공인 IPv4 주소 또는 연결 가능한 퍼블릭 엔드포인트를 갖는지 확인합니다. |
+| 요청 시간이 초과됨 | 라우팅, IGW, SG, 네트워크 ACL 또는 인스턴스 | 서브넷 라우팅 테이블에 IGW로 향하는 기본 경로가 있고, IGW가 VPC에 연결되어 있으며, SG/NACL 규칙이 의도한 HTTP 경로를 허용하는지 확인합니다. |
+| 연결이 거부됨 | EC2 또는 Nginx 프로세스 | 인스턴스가 실행 중인지, Nginx가 설치되어 활성 상태인지, 리스너가 예상 포트에 바인딩되어 있는지 확인합니다. |
+| HTTP 403/404가 반환됨 | Nginx 구성/콘텐츠 | 활성 서버 블록, 문서 루트, 파일 권한 및 요청한 경로를 확인합니다. |
+| HTTP 502/503이 반환됨 | Nginx 업스트림 구성 | 구성이 실행 중이지 않은 업스트림 애플리케이션을 요구하는지 확인합니다. 정적 Nginx 페이지에는 업스트림이 필요하지 않아야 합니다. |
+| 콘솔과 스크린샷이 일치하지 않음 | 증거 수집 | 계정/리전, 리소스 식별자, 타임스탬프, 그리고 스크린샷이 라이브 AWS 증거인지 로컬 렌더링인지 다시 확인합니다. |
 
-1. **Address:** Is the endpoint actually public and is the request aimed at the correct address?
-2. **Routing:** Does the public subnet have a default route to the IGW?
-3. **Filtering:** Does the SG allow only the intended ingress, and is egress sufficient for the response path?
-4. **Host:** Is the EC2 instance healthy and reachable through an authorized management path?
-5. **Service:** Is Nginx active and listening on the expected port?
-6. **Response:** Does the returned status and body match the expected Nginx content?
+1. **주소:** 엔드포인트가 실제로 퍼블릭인지, 요청이 올바른 주소를 대상으로 하는지 확인합니다.
+2. **라우팅:** 퍼블릭 서브넷에 IGW로 향하는 기본 경로가 있는지 확인합니다.
+3. **필터링:** SG가 의도한 인바운드만 허용하는지, 응답 경로에 필요한 아웃바운드가 충분한지 확인합니다.
+4. **호스트:** EC2 인스턴스가 정상이며 권한 있는 관리 경로를 통해 연결 가능한지 확인합니다.
+5. **서비스:** Nginx가 활성 상태이고 예상 포트에서 수신 중인지 확인합니다.
+6. **응답:** 반환된 상태와 본문이 예상한 Nginx 콘텐츠와 일치하는지 확인합니다.
 
-Do not broaden firewall access as a first response. Capture the current rule set, make the smallest authorized change, and re-test from the same client when possible.
+첫 대응으로 방화벽 액세스를 넓히지 마세요. 현재 규칙 집합을 캡처하고, 권한이 부여된 최소 변경만 적용한 다음, 가능하면 동일한 클라이언트에서 다시 테스트하세요.
 
-## Evidence rule
+## 증거 규칙
 
-A local PNG render, Markdown preview, or file inspection can prove only that the local documentation artifact is readable. It cannot prove that an AWS route, security group, EC2 instance, public endpoint, or Nginx service exists. Live AWS claims require timestamped, attributable screenshots or command output collected from the authorized environment.
+로컬 PNG 렌더링, Markdown 미리 보기 또는 파일 검사는 로컬 문서 산출물을 읽을 수 있다는 사실만 증명합니다. AWS 라우트, 보안 그룹, EC2 인스턴스, 퍼블릭 엔드포인트 또는 Nginx 서비스가 존재한다는 사실은 증명할 수 없습니다. 라이브 AWS 주장을 하려면 권한 있는 환경에서 수집한 타임스탬프와 출처를 확인할 수 있는 스크린샷 또는 명령 출력이 필요합니다.

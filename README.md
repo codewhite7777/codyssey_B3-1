@@ -1,20 +1,20 @@
-# Codyssey B3-1: AWS public web service
+# Codyssey B3-1: AWS 퍼블릭 웹 서비스
 
-This repository defines the minimum Seoul-region AWS path required by the mission:
+이 저장소는 과제에서 요구하는 서울 리전의 최소 AWS 경로를 정의합니다.
 
 `External user → Internet Gateway → Public Subnet → Security Group → EC2 → Nginx`
 
-## Implementation
+## 구현 내용
 
-- `infra/template.yaml`: CloudFormation stack for one VPC, public subnet, IGW, route table, restricted SG, and one EC2/Nginx server.
-- `iam/cloudformation-deployer-policy.json`: least-privilege starting policy for the dedicated deployment IAM identity. It does not grant `AdministratorAccess`, S3, or RDS permissions.
-- `scripts/deploy.sh`: validates inputs and deploys only to `ap-northeast-2`.
-- `scripts/integration_test.py`: read-only stack/resource check plus external `GET /health` check.
-- `scripts/cleanup.sh`: explicit-confirmation stack deletion and completion wait.
-- `scripts/generate_architecture.py`: reproducibly generates the architecture PNG.
-- `tests/test_template.py`: local structural and security checks.
+- `infra/template.yaml`: VPC 1개, 퍼블릭 서브넷, IGW, 라우팅 테이블, 제한된 SG, EC2/Nginx 서버 1개를 구성하는 CloudFormation 스택입니다.
+- `iam/cloudformation-deployer-policy.json`: 전용 배포 IAM 자격 증명을 위한 최소 권한 시작 정책입니다. `AdministratorAccess`, S3 또는 RDS 권한은 부여하지 않습니다.
+- `scripts/deploy.sh`: 입력값을 검증하고 `ap-northeast-2`에만 배포합니다.
+- `scripts/integration_test.py`: 읽기 전용 스택/리소스 확인과 외부 `GET /health` 확인을 수행합니다.
+- `scripts/cleanup.sh`: 명시적인 확인을 받은 뒤 스택을 삭제하고 완료될 때까지 기다립니다.
+- `scripts/generate_architecture.py`: 아키텍처 PNG를 재현 가능한 방식으로 생성합니다.
+- `tests/test_template.py`: 로컬 구조 및 보안 검사를 수행합니다.
 
-The EC2 key pair must already exist in Seoul. Pass its name and the learner's public `/32` (or an intentionally narrow CIDR) to the deployment script. Never commit the private key.
+EC2 키 페어는 서울 리전에 이미 존재해야 합니다. 키 페어 이름과 학습자의 공인 `/32`(또는 의도적으로 좁힌 CIDR)를 배포 스크립트에 전달하세요. 프라이빗 키는 절대 커밋하지 마세요.
 
 ```sh
 python3 -m pip install -r requirements-test.txt
@@ -25,23 +25,23 @@ python3 scripts/integration_test.py codyssey-web
 ./scripts/cleanup.sh codyssey-web --confirm
 ```
 
-## Evidence status
+## 증거 상태
 
 | Artifact | Status |
 | --- | --- |
-| `docs/architecture.png` | Local design artifact available |
-| Local unit/static tests | 4 passed during implementation; rerun after checkout changes |
-| Live external `/health` response | Pending; no live deployment claimed |
+| `docs/architecture.png` | 로컬 설계 산출물 사용 가능 |
+| 로컬 단위/정적 테스트 | 구현 중 4개 통과; 체크아웃 변경 후 다시 실행 필요 |
+| Live external `/health` response | Pending; 라이브 배포를 수행했다고 주장하지 않음 |
 | Live AWS screenshots | Pending |
-| Cleanup confirmation | Pending until an authorized non-root deployment exists |
+| Cleanup confirmation | 권한 있는 non-root 배포가 이루어질 때까지 Pending |
 
-AWS credentials inspected for this task identify the root user. The mission explicitly forbids root access, so no AWS stack was created or deleted. Use a dedicated IAM user or role with the policy in `iam/cloudformation-deployer-policy.json`, then capture live evidence under `docs/evidence/live/`.
+이 작업에서 확인된 AWS 자격 증명은 root 사용자를 가리킵니다. 과제에서는 root 액세스를 명시적으로 금지하므로 AWS 스택을 생성하거나 삭제하지 않았습니다. `iam/cloudformation-deployer-policy.json`의 정책을 사용하는 전용 IAM 사용자 또는 역할을 준비한 뒤, `docs/evidence/live/`에 라이브 증거를 수집하세요.
 
-## Submission documents
+## 제출 문서
 
-- [Architecture](docs/architecture.png)
-- [Troubleshooting report](docs/troubleshooting.md)
-- [Cleanup checklist](docs/cleanup-checklist.md)
-- [Evidence rules](docs/evidence/README.md)
+- [아키텍처](docs/architecture.png)
+- [트러블슈팅 보고서](docs/troubleshooting.md)
+- [정리 체크리스트](docs/cleanup-checklist.md)
+- [증거 규칙](docs/evidence/README.md)
 
-The diagram and documents distinguish local artifacts from live AWS proof; they do not claim an external request succeeded until a timestamped live capture is added.
+다이어그램과 문서는 로컬 산출물과 실제 AWS 증거를 구분합니다. 타임스탬프가 포함된 라이브 캡처가 추가되기 전까지는 외부 요청이 성공했다고 주장하지 않습니다.

@@ -1,19 +1,19 @@
-# Evidence guide
+# 증거 안내
 
-This directory is reserved for evidence collected during an authorized run. Live AWS evidence is **pending** in this repository.
+이 디렉터리는 권한 있는 실행 중 수집한 증거를 보관하기 위한 공간입니다. 이 저장소의 라이브 AWS 증거는 **pending** 상태입니다.
 
-## Where screenshots go
+## 스크린샷 저장 위치
 
-Use these two logical locations under `docs/evidence/`:
+`docs/evidence/` 아래에 다음 두 논리적 위치를 사용합니다.
 
-- `live/` — screenshots or exported output captured from the live AWS console, an authorized live host, or a real request to the deployed endpoint.
-- `local/` — local previews, file inspections, PNG metadata checks, and other artifacts that describe repository files only.
+- `live/` — 라이브 AWS 콘솔, 권한 있는 라이브 호스트 또는 배포된 엔드포인트에 대한 실제 요청에서 캡처한 스크린샷이나 내보낸 출력 결과입니다.
+- `local/` — 로컬 미리 보기, 파일 검사, PNG 메타데이터 확인 및 저장소 파일만 설명하는 기타 산출물입니다.
 
-Create the subdirectory only when adding evidence. Do not mix live and local artifacts in the same folder.
+증거를 추가할 때만 하위 디렉터리를 생성하세요. 같은 폴더에 live와 local 산출물을 섞지 마세요.
 
-## Naming convention
+## 이름 지정 규칙
 
-Use a stable, descriptive name with an evidence class and timestamp, for example:
+증거 분류와 타임스탬프가 포함된 안정적이고 설명적인 이름을 사용하세요. 예시는 다음과 같습니다.
 
 ```text
 live/2026-10-10T1430Z-ec2-public-ip.png
@@ -21,23 +21,23 @@ live/2026-10-10T1435Z-nginx-http-response.png
 local/2026-10-10T1440Z-architecture-png-check.txt
 ```
 
-Use the actual capture time and timezone. Do not invent timestamps for evidence that has not been collected.
+실제 캡처 시간과 시간대를 사용하세요. 아직 수집하지 않은 증거에 타임스탬프를 만들어 넣지 마세요.
 
-## Live versus local
+## 라이브와 로컬의 구분
 
-Every evidence note or filename must make its source clear:
+모든 증거 메모나 파일명은 출처를 명확하게 드러내야 합니다.
 
 | Label | What it may establish | What it cannot establish |
 | --- | --- | --- |
-| `live` | A timestamped observation from the authorized AWS environment or deployed endpoint. | Anything outside the captured scope or time. |
-| `local` | That a repository file, diagram, or local rendering exists and is readable. | That AWS resources, network paths, or Nginx are deployed or healthy. |
-| `pending` | That evidence is required but has not been collected. | Any successful deployment or request. |
+| `live` | 권한 있는 AWS 환경 또는 배포된 엔드포인트에서 타임스탬프와 함께 관찰한 사실 | 캡처된 범위나 시점 밖의 모든 것 |
+| `local` | 저장소 파일, 다이어그램 또는 로컬 렌더링이 존재하고 읽을 수 있다는 사실 | AWS 리소스, 네트워크 경로 또는 Nginx가 배포되어 정상이라는 사실 |
+| `pending` | 증거가 필요하지만 아직 수집되지 않았다는 사실 | 성공적인 배포나 요청 |
 
-For live screenshots, retain enough context to identify the account/region and resource or endpoint, while redacting secrets and unrelated personal data. Add a short companion note describing what is visible, when it was captured, and what claim it supports.
+라이브 스크린샷에는 계정/리전과 리소스 또는 엔드포인트를 식별할 수 있는 충분한 맥락을 남기되, 시크릿과 관련 없는 개인 정보는 가리세요. 무엇이 보이는지, 언제 캡처했는지, 어떤 주장을 뒷받침하는지를 설명하는 짧은 동반 메모를 추가하세요.
 
-## Current state
+## 현재 상태
 
 - Live AWS screenshots: **pending**
 - Live endpoint response: **pending**
-- Local documentation/PNG validation: may be recorded under `local/` after a local check
+- Local documentation/PNG validation: 로컬 확인 후 `local/` 아래에 기록할 수 있음
 - Deployment claim: **none**

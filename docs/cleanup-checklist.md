@@ -1,35 +1,35 @@
-# Cleanup checklist
+# 정리 체크리스트
 
-This checklist is prepared for a future authorized lab run. No cleanup actions have been executed by this documentation-only task.
+이 체크리스트는 향후 권한 있는 실습 실행을 위해 준비되었습니다. 문서만 다루는 이번 작업에서는 정리 작업을 실행하지 않았습니다.
 
-Mark each item only after verifying the resource in the correct AWS account and region. If a resource was never created, record **not created** rather than implying deletion.
+각 항목은 올바른 AWS 계정과 리전에서 해당 리소스를 확인한 후에만 표시하세요. 리소스가 생성된 적이 없다면 삭제를 암시하지 말고 **not created**로 기록합니다.
 
-## AWS resources
+## AWS 리소스
 
-- [ ] Confirm the deployment account and region.
-- [ ] Record the resource IDs needed for cleanup and evidence retention.
-- [ ] Terminate the EC2 instance, then verify its state and final termination.
-- [ ] Release any standalone Elastic IP that is no longer needed.
-- [ ] Remove unused security groups after dependent network interfaces are gone.
-- [ ] Delete the public subnet if it was created for the lab.
-- [ ] Detach and delete the Internet Gateway if it was created for the lab.
-- [ ] Delete the lab route table and its routes after subnet dependencies are removed.
-- [ ] Delete the lab VPC after all dependent resources are gone.
-- [ ] Check for leftover EBS volumes, snapshots, load balancers, CloudWatch resources, and key pairs created only for the lab.
-- [ ] Review the billing console or cost explorer for unexpected ongoing charges.
+- [ ] 배포 계정과 리전을 확인합니다.
+- [ ] 정리와 증거 보존에 필요한 리소스 ID를 기록합니다.
+- [ ] EC2 인스턴스를 종료한 뒤 상태와 최종 종료를 확인합니다.
+- [ ] 더 이상 필요하지 않은 독립 Elastic IP를 릴리스합니다.
+- [ ] 종속 네트워크 인터페이스가 삭제된 후 사용하지 않는 보안 그룹을 제거합니다.
+- [ ] 실습을 위해 생성한 퍼블릭 서브넷을 삭제합니다.
+- [ ] 실습을 위해 생성한 Internet Gateway를 분리하고 삭제합니다.
+- [ ] 서브넷 종속 항목을 제거한 후 실습 라우팅 테이블과 해당 라우트를 삭제합니다.
+- [ ] 모든 종속 리소스가 사라진 후 실습 VPC를 삭제합니다.
+- [ ] 실습 전용으로 생성된 잔여 EBS 볼륨, 스냅샷, 로드 밸런서, CloudWatch 리소스 및 키 페어가 있는지 확인합니다.
+- [ ] 예상하지 못한 지속 비용이 있는지 결제 콘솔 또는 cost explorer를 검토합니다.
 
-## Evidence and local files
+## 증거 및 로컬 파일
 
-- [ ] Preserve only the minimum live screenshots required by the submission or review.
-- [ ] Remove secrets, tokens, private keys, and unrelated account details from evidence.
-- [ ] Label each retained artifact as `live`, `local`, or `pending`.
-- [ ] Keep the architecture diagram marked as a design reference, not live proof.
-- [ ] Verify that no evidence file claims a deployment or successful request that was not observed.
+- [ ] 제출 또는 검토에 필요한 최소한의 라이브 스크린샷만 보존합니다.
+- [ ] 증거에서 시크릿, 토큰, 프라이빗 키 및 관련 없는 계정 정보를 제거합니다.
+- [ ] 보존한 각 산출물을 `live`, `local` 또는 `pending`으로 표시합니다.
+- [ ] 아키텍처 다이어그램이 라이브 증거가 아니라 설계 참고 자료로 표시되어 있는지 확인합니다.
+- [ ] 관찰하지 않은 배포나 성공한 요청을 주장하는 증거 파일이 없는지 확인합니다.
 
-## Final record
+## 최종 기록
 
-- Cleanup execution date: **pending**
-- AWS account/region checked: **pending**
-- Resources confirmed removed: **pending**
-- Remaining cost-bearing resources: **pending**
-- Reviewer or operator: **pending**
+- 정리 실행 날짜: **pending**
+- 확인한 AWS 계정/리전: **pending**
+- 삭제를 확인한 리소스: **pending**
+- 비용이 발생하는 잔여 리소스: **pending**
+- 검토자 또는 운영자: **pending**
