@@ -18,6 +18,9 @@ Parameters:
     AllowedValues:
       - t3.micro
       - t3.small
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Existing EC2 key pair used for SSH. Store the private key securely.
 
 Resources:
   VPC:
@@ -100,33 +103,12 @@ Resources:
         - Key: Name
           Value: !Sub '${AWS::StackName}-web-sg'
 
-  SsmInstanceRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: codyssey-ec2-ssm-role
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ec2.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
-
-  SsmInstanceProfile:
-    Type: AWS::IAM::InstanceProfile
-    Properties:
-      InstanceProfileName: codyssey-ec2-instance-profile
-      Roles:
-        - !Ref SsmInstanceRole
-
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64}}'
       InstanceType: !Ref InstanceType
-      IamInstanceProfile: !Ref SsmInstanceProfile
+      KeyName: !Ref KeyName
       NetworkInterfaces:
         - DeviceIndex: '0'
           AssociatePublicIpAddress: true

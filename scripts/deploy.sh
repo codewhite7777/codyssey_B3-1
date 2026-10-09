@@ -6,17 +6,18 @@ readonly SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 readonly TEMPLATE_PATH="${SCRIPT_DIR}/../infra/template.yaml"
 
 usage() {
-  printf 'Usage: %s [stack-name] [ssh-cidr]\n' "$(basename "$0")" >&2
-  printf 'Example: %s codyssey-web 203.0.113.10/32\n' "$(basename "$0")" >&2
+  printf 'Usage: %s [stack-name] KEY_NAME SSH_CIDR\n' "$(basename "$0")" >&2
+  printf 'Example: %s codyssey-web codyssey-key 203.0.113.10/32\n' "$(basename "$0")" >&2
 }
 
-if [[ "$#" -gt 2 ]]; then
+if [[ "$#" -ne 3 ]]; then
   usage
   exit 2
 fi
 
 stack_name="${1:-codyssey-web}"
-ssh_cidr="${2:-203.0.113.0/32}"
+key_name="$2"
+ssh_cidr="$3"
 
 python3 - "$stack_name" "$ssh_cidr" <<'PY'
 import ipaddress
@@ -54,8 +55,7 @@ aws cloudformation deploy \
   --template-file "$TEMPLATE_PATH" \
   --stack-name "$stack_name" \
   --region "$AWS_REGION_FIXED" \
-  --parameter-overrides "SSHIngressCidr=${ssh_cidr}" \
-  --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides "SSHIngressCidr=${ssh_cidr}" "KeyName=${key_name}" \
   --no-fail-on-empty-changeset \
   --tags Project=codyssey
 

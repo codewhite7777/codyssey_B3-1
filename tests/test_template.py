@@ -83,9 +83,11 @@ def test_instance_uses_ssm_al2023_t3_micro_and_eight_gib_root(template: dict[str
     assert "OK" in user_data
 
 
-def test_required_outputs_and_ssm_role_are_present(template: dict[str, object]) -> None:
+def test_required_outputs_and_ssh_key_parameter_are_present(template: dict[str, object]) -> None:
+    parameters = template["Parameters"]
     resources = template["Resources"]
     outputs = template["Outputs"]
     assert {"WebInstanceId", "WebPublicIp", "HealthUrl"} <= outputs.keys()
-    role = resources["SsmInstanceRole"]["Properties"]
-    assert "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore" in role["ManagedPolicyArns"]
+    assert parameters["KeyName"]["Type"] == "AWS::EC2::KeyPair::KeyName"
+    assert resources["WebServer"]["Properties"]["KeyName"] == {"Ref": "KeyName"}
+    assert "SsmInstanceRole" not in resources

@@ -35,4 +35,14 @@ printf 'Deleting stack %s in %s...\n' "$stack_name" "$AWS_REGION_FIXED"
 aws cloudformation delete-stack \
   --stack-name "$stack_name" \
   --region "$AWS_REGION_FIXED"
-printf 'Deletion requested.\n'
+aws cloudformation wait stack-delete-complete \
+  --stack-name "$stack_name" \
+  --region "$AWS_REGION_FIXED"
+if aws cloudformation describe-stacks \
+  --stack-name "$stack_name" \
+  --region "$AWS_REGION_FIXED" \
+  --output json >/dev/null 2>&1; then
+  printf 'Stack %s still exists after deletion wait.\n' "$stack_name" >&2
+  exit 1
+fi
+printf 'Stack %s deleted from %s.\n' "$stack_name" "$AWS_REGION_FIXED"

@@ -60,37 +60,12 @@
       "Resource": "*"
     },
     {
-      "Sid": "ReadAmazonLinuxSsmParameter",
+      "Sid": "ReadOnlyPublicAmiParameter",
       "Effect": "Allow",
-      "Action": "ssm:GetParameter",
+      "Action": [
+        "ssm:GetParameter"
+      ],
       "Resource": "arn:aws:ssm:ap-northeast-2::parameter/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64"
-    },
-    {
-      "Sid": "ManageCodysseyInstanceRole",
-      "Effect": "Allow",
-      "Action": [
-        "iam:AttachRolePolicy",
-        "iam:CreateRole",
-        "iam:DeleteRole",
-        "iam:DetachRolePolicy",
-        "iam:GetRole",
-        "iam:PassRole",
-        "iam:TagRole"
-      ],
-      "Resource": "arn:aws:iam::${aws:AccountId}:role/codyssey-ec2-ssm-role"
-    },
-    {
-      "Sid": "ManageCodysseyInstanceProfile",
-      "Effect": "Allow",
-      "Action": [
-        "iam:AddRoleToInstanceProfile",
-        "iam:CreateInstanceProfile",
-        "iam:DeleteInstanceProfile",
-        "iam:GetInstanceProfile",
-        "iam:RemoveRoleFromInstanceProfile",
-        "iam:TagInstanceProfile"
-      ],
-      "Resource": "arn:aws:iam::${aws:AccountId}:instance-profile/codyssey-ec2-instance-profile"
     }
   ]
 }
