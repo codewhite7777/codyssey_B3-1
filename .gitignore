@@ -1,0 +1,11 @@
+# SSH 키와 AWS 자격 증명은 절대 커밋하지 않는다
+*.pem
+*.key
+*.ppk
+.aws/
+credentials
+*.csv
+
+# OS
+.DS_Store
+Thumbs.db
