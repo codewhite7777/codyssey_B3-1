@@ -43,7 +43,6 @@
 
 - [ ] EC2 Global View에서 모든 리전의 인스턴스·VPC 확인 (기본 VPC 제외)
 - [ ] (권장) Billing Dashboard에서 과금 항목 확인
-- [ ] (선택) CloudTrail 이벤트 기록에서 `TerminateInstances`, `DeleteVpc` 확인
 
 ## 5. 최종 기록
 

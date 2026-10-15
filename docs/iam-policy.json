@@ -50,12 +50,6 @@
           "aws:RequestedRegion": "ap-northeast-2"
         }
       }
-    },
-    {
-      "Sid": "B31ReadCloudTrailEvents",
-      "Effect": "Allow",
-      "Action": "cloudtrail:LookupEvents",
-      "Resource": "*"
     }
   ]
 }
