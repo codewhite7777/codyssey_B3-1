@@ -2,11 +2,18 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "B31Ec2VpcSeoulOnly",
+      "Sid": "B31ReadOnlyAllRegions",
       "Effect": "Allow",
       "Action": [
         "ec2:Describe*",
-        "ec2:Get*",
+        "ec2:Get*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "B31Ec2VpcSeoulOnly",
+      "Effect": "Allow",
+      "Action": [
         "ec2:CreateVpc",
         "ec2:DeleteVpc",
         "ec2:ModifyVpcAttribute",
