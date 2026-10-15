@@ -6,8 +6,8 @@
 |---|---|---|
 | `01-iam-user-policy.png` | IAM 사용자와 연결된 정책 (AdministratorAccess 없음) | [ ] |
 | `02-vpc-subnet.png` | VPC CIDR, Subnet CIDR·AZ·퍼블릭 IP 자동 할당 | [ ] |
-| `03-route-table.png` | 경로(`0.0.0.0/0 → igw-`) + 서브넷 연결 탭 | [ ] |
-| `04-igw-attached.png` | IGW 상태 Attached, VPC ID | [ ] |
+| `03-igw-attached.png` | IGW 상태 Attached, VPC ID | [ ] |
+| `04-route-table.png` | 경로(`0.0.0.0/0 → igw-`) + 서브넷 연결 탭 | [ ] |
 | `05-security-group.png` | 인바운드 규칙 2개 (80 전체, 22 내 IP/32) | [ ] |
 | `06-ec2-instance.png` | 인스턴스 Running, 서브넷, 퍼블릭 IP, t3.micro | [ ] |
 | `07-ssh-login.png` | 내 PC 터미널의 SSH 접속 성공 화면 | [ ] |

@@ -1,109 +1,521 @@
-# Codyssey B3-1: 내가 만든 웹사이트를 인터넷에 올려 누구나 쓰게 하기
+# B3-1 · 내가 만든 웹사이트를 인터넷에 올려 누구나 쓰게 하기
 
-AWS 서울 리전(`ap-northeast-2`)에 VPC를 직접 구성하고, EC2에 Nginx를 올려 외부에서 접속 가능한 웹 서비스를 만든 기록입니다.
-모든 리소스는 **AWS 콘솔에서 직접** 만들었고, 실습 후 모두 삭제했습니다.
+| 분야 | 구분 | 학습시간 | 필수/선택 |
+|---|---|---|---|
+| AI/SW 기초 | 클라우드와 AI API | 40시간 | 필수 |
 
-```
-외부 사용자 → Internet Gateway → Route Table(0.0.0.0/0 → IGW) → Public Subnet → Security Group(80) → EC2 → Nginx
-```
+**주제: 퍼블릭 웹 서비스 / 클라우드: AWS 서울 리전(`ap-northeast-2`) / 방식: 콘솔에서 직접 구성 / 범위: 필수 요구사항만 (보너스 제외)**
 
-## 1. 제출물
+이 README는 세 부분으로 되어 있습니다.
 
-| 산출물 | 위치 |
+| 순서 | 섹션 | 내용 |
+|---|---|---|
+| 1 | [네트워크 설계](#네트워크-설계) | 어떤 구조로 만들었고, 요청이 서버까지 어떻게 가는지 |
+| 2 | [구축과 확인 흐름](#구축과-확인-흐름) | 계정 준비부터 리소스 정리까지 따라 하는 11단계 |
+| 3 | [과제 요구사항 대응](#과제-요구사항-대응) | 과제 문서 1~8의 요구마다 어디에서 확인하는지 |
+
+> **평가하시는 분은 [네트워크 설계](#네트워크-설계)로 구조를 먼저 보고, [구축과 확인 흐름](#구축과-확인-흐름)의 단계별 📸 스크린샷으로 실제 구성을 확인하면 됩니다.**
+> 실습 리소스는 과금 방지를 위해 모두 삭제했으므로, 증빙은 스크린샷과 문서로 남겼습니다.
+
+| 함께 보는 문서 | 내용 |
 |---|---|
-| 아키텍처 다이어그램 | [docs/architecture.png](docs/architecture.png) |
-| 외부 접속 증빙 | 이 문서의 [3. 외부 접속 검증](#3-외부-접속-검증) |
-| 트러블슈팅 보고서 | [docs/troubleshooting.md](docs/troubleshooting.md) |
-| 리소스 정리 체크리스트 | [docs/cleanup-checklist.md](docs/cleanup-checklist.md) |
-| (학습) 핵심 개념 정리 | [docs/concepts.md](docs/concepts.md) |
-| (학습) 평가 항목 답변 | [docs/evaluation.md](docs/evaluation.md) |
-| 적용한 IAM 정책 | [docs/iam-policy.json](docs/iam-policy.json) |
+| [docs/architecture.png](docs/architecture.png) | 아키텍처 다이어그램 (제출물) |
+| [docs/troubleshooting.md](docs/troubleshooting.md) | 트러블슈팅 보고서: 증상 → 가설 → 검증 → 조치 → 결과 → 재발 방지 (제출물) |
+| [docs/cleanup-checklist.md](docs/cleanup-checklist.md) | 리소스 정리 체크리스트 (제출물) |
+| [docs/concepts.md](docs/concepts.md) | 과제에 나오는 개념 정리 (특징 / 왜 필요한가 / 하는 일) |
+| [docs/evaluation.md](docs/evaluation.md) | 평가 질문별 답변 정리 |
+| [docs/iam-policy.json](docs/iam-policy.json) | 실습 IAM 사용자에 붙인 최소 권한 정책 |
+| [docs/images/](docs/images/README.md) | 단계별 스크린샷 01~13 |
 
-보너스 과제(HTTPS, Docker)는 수행하지 않았습니다.
+## 진행 상황
 
-## 2. 구성 요약
+| 단계 | 할 일 | 증빙 | 상태 |
+|---|---|---|---|
+| A. 계정 준비 | 루트 MFA, 결제 알림, IAM 최소 권한 사용자 | 📸 01 | ⬜ |
+| B. 네트워크 | VPC, Subnet, IGW, Route Table, Security Group | 📸 02~05 | ⬜ |
+| C. 서버 | EC2, SSH 접속, 아웃바운드 확인, Nginx와 `/health` | 📸 06~09 | ⬜ |
+| D. 외부 검증 | 내 PC에서 `GET /health` → 200 OK | 📸 10 | ⬜ |
+| E. 트러블슈팅 | 장애 재현과 기록 | 📸 11~12, `troubleshooting.md` | ⬜ |
+| F. 정리 | 리소스 삭제와 체크리스트 | 📸 13, `cleanup-checklist.md` | ⬜ |
 
-| 구분 | 설정 |
+---
+
+## 네트워크 설계
+
+### 컨셉: 상가 건물에 가게 하나 열기
+
+AWS에서 처음 만든 네트워크와 서버는 **바깥과 연결되어 있지 않고, 들어오는 트래픽은 모두 막혀 있습니다.**
+그래서 이 과제는 **외부에서 서버까지 오는 길을 하나씩 직접 열어 주되, 꼭 필요한 것만 여는 작업**입니다.
+구성 요소를 상가 건물에 비유하면 이렇습니다.
+
+| 구성 요소 | 비유 | 하는 일 | 이 레포의 설정 |
+|---|---|---|---|
+| VPC | 내가 임대한 건물 | 남과 분리된 나만의 네트워크 | `b3-1-vpc` / `10.0.0.0/16` |
+| Subnet | 건물 안의 1층 매장 구역 | VPC를 나눈 구역. 서버가 실제로 놓이는 곳 | `b3-1-subnet-public` / `10.0.1.0/24` |
+| Internet Gateway | 건물 정문 | VPC와 인터넷을 연결. 퍼블릭 IP ↔ 프라이빗 IP 변환 | `b3-1-igw` |
+| Route Table | 건물 안 안내판 | "밖으로 가려면 정문으로" | `0.0.0.0/0 → b3-1-igw` |
+| Public IP | 가게 도로명 주소 | 인터넷에서 찾아올 수 있는 주소 | 자동 할당 (Elastic IP 없음) |
+| Security Group | 가게 문 앞 경비원 | 어떤 포트로 누가 들어올지 결정 | 80은 누구나, 22는 내 IP만 |
+| EC2 + Nginx | 매장 + 카운터 직원 | 요청을 받아 응답하는 서버 | t3.micro, `/health → OK` |
+| IAM | 건물 관리 열쇠 | 누가 리소스를 만들고 지울 수 있는지 | `b3-1-user` + 최소 권한 정책 |
+
+> **Security Group과 IAM의 차이**: SG는 **손님이 가게에 들어올 수 있는지**(네트워크 패킷), IAM은 **누가 건물을 공사할 수 있는지**(AWS API 호출)를 정합니다.
+
+### 아키텍처
+
+![아키텍처](docs/architecture.png)
+
+| 화살표 | 흐름 |
 |---|---|
-| 리전 | `ap-northeast-2` (서울) |
-| VPC | `b3-1-vpc` / `10.0.0.0/16` |
-| Public Subnet | `b3-1-subnet-public` / `10.0.1.0/24` / AZ: `ap-northeast-2_` / 퍼블릭 IPv4 자동 할당 ON |
-| Internet Gateway | `b3-1-igw` / `b3-1-vpc`에 Attach |
-| Route Table | `b3-1-rt-public` / `10.0.0.0/16 → local`, `0.0.0.0/0 → b3-1-igw` / 서브넷 연결 |
-| Security Group | `b3-1-sg-web` / 인바운드 `80 ← 0.0.0.0/0`, `22 ← 내 IP/32` |
-| EC2 | `b3-1-ec2-web` / t3.micro (크레딧 Standard) / Ubuntu ____ LTS / EBS 8GiB gp3 |
-| Elastic IP | 할당하지 않음 (자동 퍼블릭 IP 사용) |
-| 웹 서버 | Nginx (`/health` → `200 OK`, `OK`) |
-| IAM | 사용자 `b3-1-user` / [docs/iam-policy.json](docs/iam-policy.json) 적용, AdministratorAccess 없음 |
-| 태그 | 모든 리소스에 `Project=b3-1` |
+| 파란 실선 ①~④ | 인터넷 사용자의 HTTP 80 요청 → IGW → Route Table을 따라 Subnet → SG 통과 → EC2 Nginx |
+| 주황 점선 | 관리자 PC(내 IP)의 SSH 22 접속. 같은 정문을 지나지만 SG가 내 IP만 통과시킴 |
 
-## 3. 외부 접속 검증
+### 요청 하나가 서버까지 가는 길
 
-- **선택한 방식: (B) `GET http://<퍼블릭IP>/health`**
-- 접속 정보: `http://___.___.___.___/health` (실습 당시 퍼블릭 IP. 리소스 삭제 후에는 접속되지 않음)
-- 확인 날짜: 2026-__-__
+![요청 흐름](docs/images/request_flow.svg)
 
-내 PC 터미널에서 실행했습니다.
+| 순서 | 일어나는 일 | 담당 | 빠지면 |
+|---|---|---|---|
+| ① | 사용자가 `http://<퍼블릭IP>/health`로 요청 | Public IP | 찾아올 주소가 없음 |
+| ② | 정문 통과. 퍼블릭 IP를 EC2의 프라이빗 IP(`10.0.1.x`)로 변환 | IGW | 바깥과 연결 안 됨 → **timeout** |
+| ③ | Public Subnet 도착. 응답이 나갈 길은 `0.0.0.0/0 → IGW` | Route Table | 응답이 나갈 길이 없음 → **timeout** |
+| ④ | 인바운드 80 허용 확인, 연결을 기억 | Security Group | 조용히 막힘 → **timeout** |
+| ⑤ | Nginx가 `200 OK`, `OK` 응답 | EC2 + Nginx | 서버엔 왔지만 받을 프로그램 없음 → **connection refused** |
+| ⑥ | 응답은 SG가 기억한 연결이라 자동 허용(stateful) → IGW → 사용자 | SG + Route Table | — |
 
+**timeout이면 서버 바깥**(라우팅, SG, 퍼블릭 IP), **refused면 서버 안쪽**(Nginx)을 먼저 봅니다. 이 표가 [트러블슈팅](docs/troubleshooting.md)의 점검 순서입니다.
+
+### 정한 것과 이유
+
+| 정한 것 | 이유 |
+|---|---|
+| VPC `10.0.0.0/16`, Subnet `10.0.1.0/24` | VPC는 넉넉하게(약 65,000개 주소), 서브넷은 그 안의 한 구역(256개). 나중에 서브넷을 더 나눌 여유가 남음 |
+| 콘솔에서 **"VPC만"** 선택 | "VPC 등" 마법사는 NAT Gateway 같은 과금 리소스까지 만들 수 있어, 필요한 것만 직접 만듦 |
+| 서브넷의 **퍼블릭 IPv4 자동 할당** 켜기 | 꺼져 있으면 EC2에 퍼블릭 IP가 안 붙어 외부에서 찾아올 주소가 없음 |
+| Route Table을 새로 만들어 서브넷에 연결 | VPC 기본 라우팅 테이블에는 `local`(VPC 내부)만 있음. `0.0.0.0/0 → IGW`가 있어야 퍼블릭 서브넷 |
+| SG 인바운드는 **80, 22 두 개만** | 80은 서비스용이라 전체 공개, 22는 관리용이라 내 IP `/32`만. 443(HTTPS 미사용), DB 포트(DB 없음), 전체 포트는 열지 않음 |
+| SG 아웃바운드는 기본값(전체 허용) 유지 | EC2가 `apt install`, `curl https://example.com`으로 밖에 나가야 함 |
+| NACL은 기본값 유지 | 기본값이 전체 허용이고, 접근 제어는 SG 하나로 관리 |
+| Elastic IP는 **할당하지 않음** | 자동 퍼블릭 IP로 충분. 인스턴스에 연결되지 않은 EIP는 과금 대상 |
+| t3.micro, 크레딧 **Standard** | 프리 티어 대상. t3 기본값인 Unlimited는 크레딧을 다 쓰면 추가 과금될 수 있음 |
+| EBS 8GiB gp3 | 과제 권장 범위(8~10GiB). 불필요한 증설 지양 |
+| 검증 방식 **(B) `/health`** | 고정 응답이라 성공/실패를 기계적으로 판단 가능. 응답 코드(200)까지 터미널로 증빙 |
+| 루트 계정은 1단계에서만 사용 | 루트는 권한을 제한할 수 없음. 실습은 최소 권한 IAM 사용자로만 진행 |
+| 모든 리소스에 태그 `Project=b3-1`, 이름 `b3-1-*` | 정리할 때 실습 리소스를 빠짐없이 찾기 위해 |
+
+---
+
+## 구축과 확인 흐름
+
+**계정 준비 → 네트워크(바깥에서 안으로) → 서버 → 외부 검증 → 트러블슈팅 → 정리** 순서입니다.
+네트워크를 바깥부터 만드는 이유는 뒤의 것이 앞의 것을 골라야 하기 때문입니다. 예를 들어 IGW가 있어야 Route Table에서 타겟으로 고를 수 있고, SG가 있어야 EC2를 만들 때 붙일 수 있습니다.
+정리는 반대로 **안에 있는 것부터** 지웁니다.
+
+![구축 흐름](docs/images/build_flow.svg)
+
+**어디에서 하나요?**
+
+| 표시 | 어디 | 단계 |
+|---|---|---|
+| 🖱️ | AWS 콘솔 (웹 브라우저) | 1~6, 10~11단계 |
+| `$` | 내 PC 터미널 | 7단계 SSH 접속, 9~10단계 외부 확인 |
+| `ubuntu@...$` | SSH로 들어간 EC2 안 | 7~8단계, 10단계 로그 확인 |
+
+- 콘솔 작업 전에는 **우측 상단 리전이 서울(`ap-northeast-2`)인지** 매번 확인합니다.
+- 리소스를 하나 만들 때마다 [cleanup-checklist.md](docs/cleanup-checklist.md) 표에 ID를 바로 적습니다.
+- 에러가 나면 **고치기 전에** 화면부터 캡처합니다 (트러블슈팅 재료).
+
+### 1단계. 계정 준비 (루트 계정)
+
+**무엇을**: 루트 계정을 보호하고, 실습에 쓸 최소 권한 IAM 사용자를 만듭니다.
+**왜**: 과제 제약이 "루트 계정 사용 금지, IAM 사용자로만 접근"이기 때문입니다. **루트로 로그인하는 건 이번이 마지막**입니다.
+
+| 순서 | 콘솔에서 할 일 |
+|---|---|
+| 1 | 우측 상단 리전을 **아시아 태평양(서울)**으로 변경 |
+| 2 | 우측 상단 계정 메뉴 → 보안 자격 증명 → **MFA 할당** |
+| 3 | Billing → Budgets → **Zero spend budget** 생성 (1센트라도 과금되면 메일) |
+| 4 | IAM → 정책 → 정책 생성 → JSON 탭에 [docs/iam-policy.json](docs/iam-policy.json) 붙여넣기 → 이름 `b3-1-policy` |
+| 5 | IAM → 사용자 → 사용자 생성: 이름 `b3-1-user`, 콘솔 접근 허용, "다음 로그인 시 비밀번호 변경" **끄기**, 권한은 `b3-1-policy`만 직접 연결, 태그 `Project=b3-1` |
+| 6 | 📸 **01** 사용자 권한 탭 (`b3-1-policy`만 있고 AdministratorAccess 없음) |
+| 7 | 콘솔 로그인 URL 저장 → 로그아웃 → URL로 `b3-1-user` 로그인 |
+
+**IAM 정책에 넣은 권한**
+
+| 범위 | 허용 | 이유 |
+|---|---|---|
+| 조회 (`ec2:Describe*`, `ec2:Get*`) | 모든 리전 | 콘솔 화면 표시, 정리 때 EC2 Global View로 다른 리전 확인 |
+| 생성·삭제·연결 (VPC, Subnet, IGW, Route, SG, 키페어, 인스턴스, 태그, 볼륨) | **서울 리전만** | 실습에 필요한 작업만. 다른 리전에 실수로 만드는 것도 막음 |
+| `cloudtrail:LookupEvents` | 조회만 | 권한 오류가 났을 때 어떤 API가 거부됐는지 확인 |
+| S3, RDS, IAM, AdministratorAccess | **주지 않음** | 실습과 무관 |
+
+**결과**: 콘솔 우측 상단에 `b3-1-user`가 보이면 됩니다. 1단계 6번을 루트일 때 찍는 이유는, `b3-1-user`에게는 IAM 화면을 볼 권한이 없기 때문입니다.
+
+### 2단계. VPC와 Subnet 만들기
+
+**무엇을**: 나만의 네트워크(VPC)와 그 안의 구역(Subnet)을 만듭니다.
+**왜**: 서버를 놓을 격리된 공간이 먼저 있어야 하기 때문입니다.
+
+| 순서 | 콘솔에서 할 일 (VPC 서비스) |
+|---|---|
+| 1 | VPC 생성 → **VPC만** → 이름 `b3-1-vpc`, IPv4 CIDR `10.0.0.0/16`, 태그 `Project=b3-1` |
+| 2 | 서브넷 생성 → VPC `b3-1-vpc` → 이름 `b3-1-subnet-public`, AZ `ap-northeast-2a`, CIDR `10.0.1.0/24` |
+| 3 | 만든 서브넷 선택 → 작업 → 서브넷 설정 편집 → **퍼블릭 IPv4 주소 자동 할당 활성화** |
+
+**결과**: 서브넷 상세에 `10.0.1.0/24`, `ap-northeast-2a`, "퍼블릭 IPv4 주소 자동 할당: 예"가 보입니다. 📸 **02**
+
+### 3단계. Internet Gateway 연결하기
+
+**무엇을**: VPC에 인터넷으로 나가는 정문을 답니다.
+**왜**: IGW가 없으면 퍼블릭 IP가 있어도 VPC가 인터넷과 연결되지 않습니다.
+
+| 순서 | 콘솔에서 할 일 |
+|---|---|
+| 1 | 인터넷 게이트웨이 생성 → 이름 `b3-1-igw`, 태그 `Project=b3-1` |
+| 2 | 작업 → **VPC에 연결** → `b3-1-vpc` |
+
+**결과**: 상태 `Attached`, VPC ID가 `b3-1-vpc`의 ID와 같습니다. 📸 **03**
+
+### 4단계. Route Table 설정하기
+
+**무엇을**: "VPC 밖으로 가는 트래픽은 IGW로"라는 경로를 만들고 서브넷에 연결합니다.
+**왜**: VPC 기본 라우팅 테이블에는 `10.0.0.0/16 → local`(내부)만 있습니다. 이 상태에서는 외부 요청이 들어와도 **응답이 나갈 길이 없습니다.**
+
+| 순서 | 콘솔에서 할 일 |
+|---|---|
+| 1 | 라우팅 테이블 생성 → 이름 `b3-1-rt-public`, VPC `b3-1-vpc` |
+| 2 | 라우팅 탭 → 라우팅 편집 → 라우팅 추가: 대상 `0.0.0.0/0`, 타겟 **인터넷 게이트웨이** `b3-1-igw` |
+| 3 | 서브넷 연결 탭 → 서브넷 연결 편집 → `b3-1-subnet-public` 선택 |
+
+**결과**: 라우팅이 두 줄(`10.0.0.0/16 → local`, `0.0.0.0/0 → igw-...`)이고, 서브넷 연결 탭에 `b3-1-subnet-public`이 있습니다. 📸 **04** (라우팅 탭, 서브넷 연결 탭)
+
+### 5단계. Security Group 만들기
+
+**무엇을**: 서버 앞의 경비원 규칙을 정합니다.
+**왜**: 열린 포트는 외부에서 두드릴 수 있는 문입니다. 서비스(80)와 관리(22)에 필요한 문만 엽니다.
+
+| 순서 | 콘솔에서 할 일 (EC2 서비스 → 보안 그룹) |
+|---|---|
+| 1 | 보안 그룹 생성 → 이름 `b3-1-sg-web`, VPC **`b3-1-vpc`** (기본 VPC가 선택돼 있으면 바꿈) |
+| 2 | 인바운드 규칙 추가: 유형 **HTTP**, 소스 `0.0.0.0/0` (Anywhere-IPv4) |
+| 3 | 인바운드 규칙 추가: 유형 **SSH**, 소스 **내 IP** (`x.x.x.x/32`로 자동 입력) |
+| 4 | 아웃바운드 규칙은 기본값 유지, 태그 `Project=b3-1` |
+
+| 포트 | 소스 | 이유 |
+|---|---|---|
+| 80 (HTTP) | `0.0.0.0/0` | 누구나 웹 서비스에 접속해야 함 |
+| 22 (SSH) | 내 IP `/32` | 서버 관리는 나만. 전체에 열면 무차별 대입 공격 대상 |
+| 그 외 | 열지 않음 | 쓰지 않는 문은 닫아 둠 |
+
+**결과**: 인바운드 규칙이 정확히 두 줄입니다. 📸 **05** (내 IP 앞부분은 가리고 `/32`는 보이게)
+
+> 집, 학교 등 인터넷 환경이 바뀌면 내 공인 IP가 바뀌어 SSH가 안 될 수 있습니다. 그때는 22 규칙의 소스를 다시 "내 IP"로 수정합니다.
+
+### 6단계. EC2 만들기
+
+**무엇을**: 키페어를 만들고, Public Subnet에 서버 한 대를 띄웁니다.
+**왜**: 웹 서버 프로그램을 실행할 컴퓨터가 필요합니다.
+
+| 순서 | 콘솔에서 할 일 (EC2 서비스) |
+|---|---|
+| 1 | 키 페어 생성 → 이름 `b3-1-key`, RSA, `.pem` → 다운로드한 파일은 **레포 밖**에 보관 (재발급 불가) |
+| 2 | 인스턴스 시작 → 이름 `b3-1-ec2-web`, AMI **Ubuntu Server LTS** (프리 티어 사용 가능 표시), 유형 **t3.micro**, 키 페어 `b3-1-key` |
+| 3 | 네트워크 설정 → 편집: VPC **`b3-1-vpc`**, 서브넷 `b3-1-subnet-public`, 퍼블릭 IP 자동 할당 **활성화**, 기존 보안 그룹 `b3-1-sg-web` |
+| 4 | 스토리지 8GiB gp3 |
+| 5 | 고급 세부 정보 → 크레딧 사양 **Standard**, 태그 `Project=b3-1` |
+
+**결과**: 인스턴스 상태 `실행 중`, 상태 검사 `2/2 통과`, 퍼블릭 IPv4 주소가 있습니다. 📸 **06** (서브넷, 퍼블릭 IP, 인스턴스 유형이 보이게)
+
+> 인스턴스 시작 화면은 **기본 VPC가 미리 선택**되어 있습니다. 바꾸지 않으면 내 VPC가 아닌 곳에 서버가 생깁니다.
+
+### 7단계. SSH 접속하고 아웃바운드 확인하기
+
+**무엇을**: 내 PC에서 서버에 접속하고, 서버에서 인터넷으로 나갈 수 있는지 확인합니다.
+**왜**: 과제 요구가 "SSH 접속 가능"과 "인스턴스에서 인터넷 아웃바운드 통신 가능"이기 때문입니다.
+
+내 PC 터미널(`$`)에서:
+
+```bash
+chmod 400 ~/keys/b3-1-key.pem
+ssh -i ~/keys/b3-1-key.pem ubuntu@<퍼블릭IP>
 ```
-$ curl -i http://___.___.___.___/health
+
+| 명령 | 하는 일 |
+|---|---|
+| `chmod 400` | 키 파일을 나만 읽을 수 있게 함. 권한이 넓으면 ssh가 키 사용을 거부함 |
+| `ssh -i 키 ubuntu@IP` | 키로 인증해 서버에 접속. Ubuntu AMI의 기본 사용자는 `ubuntu` |
+
+처음 접속하면 `Are you sure you want to continue connecting?`이 나옵니다. `yes`를 입력합니다.
+**결과**: 프롬프트가 `ubuntu@ip-10-0-1-xx:~$`로 바뀝니다. 📸 **07**
+
+EC2 안(`ubuntu@...$`)에서:
+
+```bash
+curl -I https://example.com
+```
+
+**결과**: 첫 줄에 `HTTP/... 200`이 보입니다. 서버 → IGW → 인터넷으로 나가는 길이 열려 있다는 뜻입니다. 📸 **08**
+
+### 8단계. Nginx 설치하고 `/health` 만들기
+
+**무엇을**: 웹 서버를 설치하고, 상태 확인용 주소 `/health`가 고정 응답 `OK`를 주도록 설정합니다.
+**왜**: 외부 접속 검증을 (B) 방식으로 하기 때문입니다.
+
+EC2 안(`ubuntu@...$`)에서:
+
+```bash
+sudo apt update
+sudo apt install -y nginx
+systemctl status nginx --no-pager
+curl -i http://localhost
+```
+
+| 명령 | 하는 일 |
+|---|---|
+| `sudo apt update` | 설치 가능한 패키지 목록 새로고침 |
+| `sudo apt install -y nginx` | Nginx 설치. 설치 직후 자동으로 실행되고 80 포트에서 대기 |
+| `systemctl status nginx` | 실행 중인지 확인 (`active (running)`) |
+| `curl -i http://localhost` | 서버 안에서 직접 요청. `HTTP/1.1 200 OK` |
+
+이어서 설정 파일을 엽니다.
+
+```bash
+sudo nano /etc/nginx/sites-available/default
+```
+
+`server {` 블록 안, `server_name _;` 줄 아래에 추가하고 저장합니다 (`Ctrl+O`, `Enter`, `Ctrl+X`).
+
+```nginx
+location = /health {
+    default_type text/plain;
+    return 200 "OK\n";
+}
+```
+
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
+curl -i http://localhost/health
+```
+
+| 명령 | 하는 일 |
+|---|---|
+| `sudo nginx -t` | 설정 문법 검사. `syntax is ok`, `test is successful`이 나와야 함 |
+| `sudo systemctl reload nginx` | 서버를 끄지 않고 바뀐 설정만 다시 읽음 |
+| `curl -i http://localhost/health` | `/health` 응답 확인 |
+
+**결과**: `HTTP/1.1 200 OK`와 마지막 줄 `OK`. 📸 **09** (`systemctl status`와 `curl` 결과가 함께 보이게)
+
+### 9단계. 외부에서 접속 검증하기 (B)
+
+**무엇을**: 서버 바깥(내 PC)에서 `/health`를 호출합니다.
+**왜**: 서버 안의 `localhost` 확인은 Nginx만 증명합니다. **외부 → IGW → Route Table → SG → Nginx** 전체 경로가 열렸는지는 바깥에서 확인해야 합니다.
+
+내 PC 터미널(`$`, SSH 창이 아닌 **새 탭**)에서:
+
+```bash
+curl -i http://<퍼블릭IP>/health
+```
+
+**결과**
+
+```text
 HTTP/1.1 200 OK
+Server: nginx/...
+Content-Type: text/plain
 ...
+
 OK
 ```
 
-![외부 /health 호출](docs/images/10-external-health.png)
+📸 **10** — 이 화면이 과제의 "외부 접속 증빙"입니다. 브라우저로 `http://<퍼블릭IP>`에 접속하면 "Welcome to nginx!"도 보입니다.
 
-**B를 위해 구성한 것**
-1. Nginx 설정(`/etc/nginx/sites-available/default`)의 `server {}` 안에 아래 블록을 추가
-   ```nginx
-   location = /health {
-       default_type text/plain;
-       return 200 "OK\n";
-   }
-   ```
-2. `sudo nginx -t`로 문법 확인 후 `sudo systemctl reload nginx`
-3. Security Group에서 80 포트를 `0.0.0.0/0`에 허용
-4. 서브넷의 퍼블릭 IPv4 자동 할당을 켜서 EC2에 퍼블릭 IP 부여
+> 브라우저가 주소를 `https://`로 자동으로 바꾸면 443은 열지 않았으므로 접속되지 않습니다. 주소창에 `http://`를 직접 입력합니다.
 
-## 4. 진행 과정과 증빙
+### 10단계. 트러블슈팅 재현하기
 
-| # | 단계 | 확인 내용 | 스크린샷 |
+**무엇을**: SG에서 80 규칙을 일부러 지워 장애를 만들고, 근거를 따라 원인을 찾은 뒤 복구합니다.
+**왜**: 과제 제출물인 트러블슈팅 보고서에 **증상 → 가설 → 검증 → 조치 → 결과 → 재발 방지**를 실제 근거와 함께 남기기 위해서입니다.
+
+| 순서 | 어디서 | 할 일 | 보이는 것 |
 |---|---|---|---|
-| 01 | IAM | 실습용 IAM 사용자, 최소 권한 정책, AdministratorAccess 없음 | [01](docs/images/01-iam-user-policy.png) |
-| 02 | 네트워크 | VPC `10.0.0.0/16`, Subnet `10.0.1.0/24` | [02](docs/images/02-vpc-subnet.png) |
-| 03 | 네트워크 | Route Table의 `0.0.0.0/0 → IGW` 경로와 서브넷 연결 | [03](docs/images/03-route-table.png) |
-| 04 | 네트워크 | IGW가 VPC에 Attached | [04](docs/images/04-igw-attached.png) |
-| 05 | 보안 | SG 인바운드 80(전체), 22(내 IP `/32`)만 존재 | [05](docs/images/05-security-group.png) |
-| 06 | 컴퓨트 | EC2 Running, Public Subnet 배치, 퍼블릭 IP | [06](docs/images/06-ec2-instance.png) |
-| 07 | 컴퓨트 | SSH 접속 성공 | [07](docs/images/07-ssh-login.png) |
-| 08 | 네트워크 | 인스턴스에서 `curl -I https://example.com` 성공 (아웃바운드) | [08](docs/images/08-outbound-curl.png) |
-| 09 | 웹 서버 | `systemctl status nginx` 실행 중, `curl -i http://localhost` 200 | [09](docs/images/09-localhost-200.png) |
-| 10 | 검증 | 내 PC에서 `curl -i http://<퍼블릭IP>/health` 200 + `OK` | [10](docs/images/10-external-health.png) |
-| 11 | 트러블슈팅 | 장애 재현 화면 | [11](docs/images/11-troubleshoot-before.png) |
-| 12 | 트러블슈팅 | 조치 후 정상 화면 | [12](docs/images/12-troubleshoot-after.png) |
-| 13 | 정리 | EC2 Terminated, 볼륨·VPC 삭제 확인 | [13](docs/images/13-cleanup.png) |
+| 1 | 🖱️ | SG `b3-1-sg-web`에서 HTTP 80 규칙 삭제 | 인바운드에 22만 남음 |
+| 2 | `$` | `curl -v --max-time 10 http://<퍼블릭IP>/health` | 응답 없이 timeout → 📸 **11** |
+| 3 | `ubuntu@...$` | `curl -i http://localhost/health` | 200 OK → Nginx는 정상 |
+| 4 | `ubuntu@...$` | `sudo tail -n 5 /var/log/nginx/access.log` | 내 PC의 요청 기록이 **없음** → 요청이 서버에 오지 않음 |
+| 5 | 🖱️ | Route Table, SG 차례로 확인 | 경로는 정상, SG에 80 없음 → 원인 확정 |
+| 6 | 🖱️ | 80 규칙 하나만 다시 추가 | — |
+| 7 | `$` | 같은 명령 다시 실행 | 200 OK, `access.log`에 내 IP 기록 → 📸 **12** |
 
-## 5. 평가 항목 ↔ 근거
+**결과**: 기록은 [docs/troubleshooting.md](docs/troubleshooting.md) 사례 1에 남깁니다. 실습 중 다른 에러(권한 부족, SSH 거부 등)가 났다면 사례 2로 추가합니다.
 
-| 평가 질문 | 근거 |
+### 11단계. 리소스 정리하기
+
+**무엇을**: 만든 리소스를 **안에 있는 것부터** 삭제합니다.
+**왜**: 남은 리소스는 계속 과금됩니다. 그리고 VPC 안에 무언가 남아 있으면 VPC를 지울 수 없습니다.
+
+| 순서 | 삭제 | 확인 |
+|---|---|---|
+| 0 | — | **스크린샷 01~12가 `docs/images/`에 모두 있는지** 먼저 확인 (삭제 후 다시 찍을 수 없음) |
+| 1 | EC2 종료(Terminate) | 상태 `종료됨`. 약 1시간만 보이므로 **바로** 📸 **13** |
+| 2 | EBS | 볼륨 목록에 남은 볼륨 없음 (루트 볼륨은 종료 시 함께 삭제) |
+| 3 | Elastic IP | 목록 비어 있음 (할당하지 않음) |
+| 4 | 키 페어 `b3-1-key` | 내 PC의 `.pem`도 삭제 |
+| 5 | 보안 그룹 `b3-1-sg-web` | — |
+| 6 | 서브넷, 라우팅 테이블 | — |
+| 7 | 인터넷 게이트웨이 | VPC에서 **분리(Detach)** 후 삭제 |
+| 8 | VPC `b3-1-vpc` | — |
+| 9 | 전체 확인 | EC2 Global View에서 다른 리전에 남은 인스턴스 없음 |
+
+**결과**: [docs/cleanup-checklist.md](docs/cleanup-checklist.md)의 모든 항목에 체크하고 정리 일시를 적습니다.
+
+---
+
+## 과제 요구사항 대응
+
+과제 문서 1~8의 순서대로, 요구마다 어디에서 확인하는지 정리합니다.
+
+### 1. 미션 소개
+
+AWS 서울 리전에 **VPC로 격리된 네트워크**를 직접 만들고, EC2에 Nginx를 올려 **외부에서 접속 가능한 웹 서비스**를 완성합니다.
+Security Group과 IAM으로 **필요한 것만 허용**하고, 장애는 **로그와 증상을 근거로** 해결하며, 실습 후에는 **과금 리소스를 남기지 않습니다.**
+
+### 2. 최종 결과물
+
+| 과제 요구 | 위치 | 상태 |
+|---|---|---|
+| 아키텍처 다이어그램 1장 (VPC, Subnet, IGW, EC2, SG, 외부 → 서비스 흐름) | [docs/architecture.png](docs/architecture.png) | ✅ |
+| 웹 서비스 외부 접속 증빙 (방식, 접속 정보 README 기재 + 스크린샷) | [9단계](#9단계-외부에서-접속-검증하기-b), 아래 [외부 접속 검증](#외부-접속-검증-택-1) | ⬜ |
+| 트러블슈팅 보고서 1개 (최소 1건, 6항목) | [docs/troubleshooting.md](docs/troubleshooting.md) | ⬜ |
+| 리소스 정리 체크리스트 1개 | [docs/cleanup-checklist.md](docs/cleanup-checklist.md) | ⬜ |
+
+```text
+codyssey_B3-1/
+├── README.md               네트워크 설계, 구축과 확인 흐름, 과제 요구사항 대응
+└── docs/
+    ├── architecture.png    아키텍처 다이어그램 (제출물)
+    ├── troubleshooting.md  트러블슈팅 보고서 (제출물)
+    ├── cleanup-checklist.md 리소스 정리 체크리스트 (제출물)
+    ├── concepts.md         개념 정리
+    ├── evaluation.md       평가 질문별 답변
+    ├── iam-policy.json     IAM 최소 권한 정책
+    └── images/             흐름 그림, 단계별 스크린샷 01~13
+```
+
+### 3. 과제 목표
+
+**1. VPC, Subnet, Route Table, IGW의 역할과 트래픽 흐름**
+- VPC = 내 네트워크(건물), Subnet = 서버가 놓이는 구역, IGW = 인터넷과의 정문, Route Table = 어디로 보낼지 정한 안내판
+- 이 레포: [요청 하나가 서버까지 가는 길](#요청-하나가-서버까지-가는-길) ①~⑥
+
+**2. Security Group과 IAM의 차이, 최소 권한 원칙**
+- SG = 서버로 들어오는 **패킷** 통제 / IAM = **AWS API 호출**(리소스 생성·삭제) 통제
+- 최소 권한 = 필요한 권한만. 유출이나 실수가 생겨도 피해가 권한 범위 안으로 제한됨
+- 이 레포: SG는 [5단계](#5단계-security-group-만들기) 두 줄, IAM은 [1단계](#1단계-계정-준비-루트-계정) 정책 표
+
+**3. 외부 요청이 EC2 웹 서버까지 가기 위한 설정**
+- **라우팅**(`0.0.0.0/0 → IGW`) + **퍼블릭 IP**(자동 할당) + **보안 그룹**(80 허용) + **웹 서버 실행**(Nginx). 넷 중 하나라도 빠지면 접속 실패
+- 이 레포: [요청 흐름 표](#요청-하나가-서버까지-가는-길)의 "빠지면" 칸
+
+**4. 로그와 증상을 근거로 한 트러블슈팅**
+- `curl`이 timeout이면 서버 바깥, refused면 서버 안쪽. `access.log`에 기록이 없으면 요청이 서버에 오지 않은 것
+- 한 번에 하나만 바꾸고 다시 확인
+- 이 레포: [10단계](#10단계-트러블슈팅-재현하기), [docs/troubleshooting.md](docs/troubleshooting.md)
+
+**5. 과금 요인과 안전한 정리 순서**
+- 과금 요인: 실행 중인 EC2, 연결 안 된 Elastic IP, 남은 EBS·스냅샷, NAT Gateway, ALB, 다른 리전에 남은 리소스
+- 정리 순서: 안에 있는 것부터 (EC2 → SG → Subnet/RT → IGW → VPC)
+- 이 레포: [11단계](#11단계-리소스-정리하기), [docs/cleanup-checklist.md](docs/cleanup-checklist.md)
+
+> 그림과 비유가 있는 더 자세한 설명: [docs/concepts.md](docs/concepts.md)
+
+### 4. 기능 요구 사항
+
+#### 네트워크 구성
+
+| 요구 | 충족 | 확인 |
+|---|---|---|
+| VPC 1개 | `b3-1-vpc` `10.0.0.0/16` | [2단계](#2단계-vpc와-subnet-만들기) 📸 02 |
+| Public Subnet 1개 | `b3-1-subnet-public` `10.0.1.0/24` | 2단계 📸 02 |
+| IGW를 VPC에 연결 | `b3-1-igw` Attached | [3단계](#3단계-internet-gateway-연결하기) 📸 03 |
+| Route Table에 `0.0.0.0/0 → IGW` | `b3-1-rt-public` + 서브넷 연결 | [4단계](#4단계-route-table-설정하기) 📸 04 |
+| 인스턴스의 인터넷 아웃바운드 | `curl -I https://example.com` 200 | [7단계](#7단계-ssh-접속하고-아웃바운드-확인하기) 📸 08 |
+
+#### 컴퓨트 및 웹 서버 배포
+
+| 요구 | 충족 | 확인 |
+|---|---|---|
+| Public Subnet에 EC2 1대 | `b3-1-ec2-web` t3.micro | [6단계](#6단계-ec2-만들기) 📸 06 |
+| SSH 접속 | 키 `b3-1-key`, 내 IP에서 | 7단계 📸 07 |
+| 웹 서버 설치, 실행 중 | Nginx `active (running)` | [8단계](#8단계-nginx-설치하고-health-만들기) 📸 09 |
+| `curl http://localhost` 200 | `HTTP/1.1 200 OK` | 8단계 📸 09 |
+
+#### 접근 제어 (보안 그룹)
+
+| 요구 | 충족 | 확인 |
+|---|---|---|
+| 필요한 포트만 허용 | 인바운드 80, 22 두 개뿐 | [5단계](#5단계-security-group-만들기) 📸 05 |
+| HTTP 80은 `0.0.0.0/0` | ✅ | 📸 05 |
+| SSH 22는 개인 IP만 | 내 IP `/32` | 📸 05 |
+| 전체 포트(0-65535) 허용 규칙 없음 | ✅ | 📸 05 |
+
+#### 권한 (IAM) 최소 권한
+
+| 요구 | 충족 | 확인 |
+|---|---|---|
+| IAM 사용자 1개 사용 | `b3-1-user` | [1단계](#1단계-계정-준비-루트-계정) 📸 01 |
+| EC2/VPC/SG 구성에 필요한 범위로 제한 | EC2 액션만, 생성·삭제는 서울 리전만 | [docs/iam-policy.json](docs/iam-policy.json) |
+| 무관한 서비스(S3/RDS 등) 권한 없음 | ✅ | iam-policy.json |
+| AdministratorAccess 없음 | ✅ | 📸 01 |
+
+#### 외부 접속 검증 (택 1)
+
+| 항목 | 내용 |
 |---|---|
-| VPC, Subnet, IGW, Route Table 구성 | 스크린샷 02~04, [다이어그램](docs/architecture.png) |
-| SSH 접속, 웹 서버 실행 | 스크린샷 07, 09 |
-| SG 최소 포트, SSH IP 제한 | 스크린샷 05 |
-| 외부 접속 검증 (B) | 3장, 스크린샷 10 |
-| 정리 5종 (EC2/EBS/EIP/IGW/VPC) | [정리 체크리스트](docs/cleanup-checklist.md), 스크린샷 13 |
-| 개념 설명, 응용 질문 | [개념 정리](docs/concepts.md), [평가 답변](docs/evaluation.md) |
+| 선택한 방식 | **(B) `GET http://<퍼블릭IP>/health`** |
+| 접속 정보 | `http://___.___.___.___/health` (실습 당시 퍼블릭 IP. 리소스 삭제 후에는 접속되지 않음) |
+| 확인 일시 | 2026-__-__ __:__ (KST) |
+| 응답 | `HTTP/1.1 200 OK`, 본문 `OK` |
+| 구성한 것 | Nginx `location = /health` 고정 응답, SG 80 허용, 서브넷 퍼블릭 IP 자동 할당 |
+| 증빙 | [9단계](#9단계-외부에서-접속-검증하기-b) 📸 10 |
 
-## 6. 리소스 추적 기준
+#### 운영 안정성 (과금 방지)
 
-- **태그**: 모든 리소스에 `Project=b3-1`
-- **이름 규칙**: `b3-1-<리소스>-<용도>` (예: `b3-1-sg-web`)
-- **체크리스트**: 리소스를 만들 때마다 [cleanup-checklist.md](docs/cleanup-checklist.md)에 바로 기록
-- **확인**: 정리 후 EC2 Global View로 다른 리전에 남은 리소스가 없는지 확인
+| 요구 | 충족 | 확인 |
+|---|---|---|
+| 리소스 정리 + "종료/삭제 완료" 근거 | 체크리스트, 스크린샷 | [11단계](#11단계-리소스-정리하기) 📸 13 |
+| 최소 5종: EC2, EBS, Elastic IP, IGW, VPC | EIP는 할당하지 않음으로 기록 | [docs/cleanup-checklist.md](docs/cleanup-checklist.md) |
 
-## 7. 보안 메모
+### 5. 보너스 과제
 
-- 루트 계정은 최초 설정(MFA, IAM 사용자 생성, 결제 알림)에만 사용했고, 실습은 IAM 사용자로만 진행했습니다.
-- `.pem` 키와 AWS 자격 증명은 레포에 올리지 않았습니다(`.gitignore`).
-- 스크린샷의 AWS 계정 ID와 내 IP 일부는 가렸습니다.
+이번 범위에서는 하지 않습니다 (HTTPS, Docker). 필수 요구사항에 집중합니다.
+
+### 6. 개발 환경
+
+| 항목 | 사용 |
+|---|---|
+| 클라우드 | Amazon Web Services, 서울 리전 (`ap-northeast-2`) |
+| 구성 방법 | AWS 관리 콘솔 (웹) |
+| 인스턴스 | t3.micro, Ubuntu Server ____ LTS, EBS 8GiB gp3 |
+| 웹 서버 | Nginx |
+| 접속, 확인 | 내 PC 터미널 (`ssh`, `curl`) |
+
+### 7. 제약 사항
+
+| 제약 | 지킨 방법 |
+|---|---|
+| 프리 티어 범위 | t3.micro(크레딧 Standard), EBS 8GiB, EIP·NAT·ALB 만들지 않음, Zero spend budget 알림 |
+| 루트 계정 사용 금지 | 1단계 계정 보호와 IAM 사용자 생성에만 사용, 이후 `b3-1-user`로만 작업 |
+| 실습 후 모든 리소스 삭제 | [11단계](#11단계-리소스-정리하기), 체크리스트 |
+| 서울 리전 | IAM 정책으로 생성·삭제를 `ap-northeast-2`로만 제한 |
+| 키페어 1개, 안전 보관 | `b3-1-key.pem`은 레포 밖에 보관, `.gitignore`에 `*.pem` |
+| SSH 소스 제한 유지 | 22는 처음부터 끝까지 내 IP `/32`만 |
+
+### 8. 결과 예시와 대응
+
+| 과제 예시 | 이 레포 |
+|---|---|
+| 아키텍처 다이어그램 (VPC ⊃ Subnet ⊃ EC2, IGW, Internet) | [docs/architecture.png](docs/architecture.png). 예시에 더해 Route Table, SG 규칙, SSH 경로까지 표시 |
+| 외부 접속 (B) `200 OK` / `OK` | [9단계](#9단계-외부에서-접속-검증하기-b) 📸 10 |
+| 트러블슈팅 템플릿 (증상, 원인 가설, 검증 방법, 조치, 결과, 재발 방지) | [docs/troubleshooting.md](docs/troubleshooting.md) 사례 1 |
+| 리소스 정리 체크리스트 예시 | [docs/cleanup-checklist.md](docs/cleanup-checklist.md) 2~4장 |
