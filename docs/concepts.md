@@ -8,13 +8,13 @@
 ## 0. 한 줄로 보는 전체 흐름
 
 ```
-사용자 브라우저
-  → (퍼블릭 IP) → Internet Gateway
-  → Route Table (0.0.0.0/0 ↔ IGW)
-  → Public Subnet
-  → Security Group (80 허용)
-  → EC2 (Nginx) → 응답
+요청: 내 PC → (퍼블릭 IP) → IGW(퍼블릭→프라이빗 IP 변환) → VPC 내부 경로(local) → Public Subnet
+      → Security Group(80 허용, 연결 기억) → EC2(Nginx)
+응답: EC2 → Security Group(기억된 연결이라 통과) → Route Table(0.0.0.0/0 → IGW)
+      → IGW(프라이빗→퍼블릭 IP 변환) → 내 PC
 ```
+
+Route Table의 `0.0.0.0/0 → IGW`는 **응답이 VPC 밖으로 나갈 때** 쓰인다. 그림은 [README의 외부 접속 흐름](../README.md#외부에서-접속할-때의-흐름-요청과-응답-왕복)을 본다.
 
 요청이 서버까지 가려면 **길(라우팅) + 주소(퍼블릭 IP) + 문(보안 그룹) + 받는 사람(웹 서버 프로세스)** 네 가지가 모두 있어야 한다.
 
