@@ -1,7 +1,7 @@
 # 평가 항목 답변 정리
 
 > 초안이다. 피어평가 전에 **내 말로 다시 쓰고**, 다이어그램을 짚으며 소리 내어 설명해 본다.
-> 개념 설명은 [concepts.md](concepts.md), 실제 근거는 [README](../README.md)의 스크린샷을 함께 본다.
+> 개념 설명은 [concepts.md](concepts.md), 실제 근거는 [README](../README.md)의 요구사항 확인 표와 스크린샷을 함께 본다.
 
 ---
 
@@ -12,7 +12,7 @@
 | VPC, Public Subnet, IGW, Route Table(`0.0.0.0/0 → IGW`) 구성 | 스크린샷 02, 03, 04 |
 | SSH 접속 가능, 웹 서버 실행 중 | 스크린샷 07, 09 |
 | SG 필요 포트만 허용, SSH 특정 IP 제한 | 스크린샷 05 |
-| 외부 접속 검증 (B: `/health` 200 + `OK`) | 스크린샷 10, README 3장 |
+| 외부 접속 검증 (B: `/health` 200 + `OK`) | 스크린샷 10, README 2장 |
 | 정리 5종 (EC2/EBS/EIP/IGW/VPC) 완료 | [cleanup-checklist.md](cleanup-checklist.md), 스크린샷 13 |
 
 ---
