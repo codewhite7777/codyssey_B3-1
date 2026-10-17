@@ -4,6 +4,9 @@
 
 | 파일 | 찍을 화면 | 상태 |
 |---|---|---|
+| `00a-region-seoul.png` | (준비) 리전을 서울로 선택 | [x] |
+| `00b-mfa-device-type.png` | (준비) MFA 유형: 인증 관리자 앱 | [x] |
+| `00c-mfa-setup.png` | (준비) QR 스캔 후 코드 입력 (QR 가림) | [x] |
 | `01-iam-user-policy.png` | IAM 사용자와 연결된 정책 (AdministratorAccess 없음) | [ ] |
 | `02-vpc-subnet.png` | VPC CIDR, Subnet CIDR·AZ·퍼블릭 IP 자동 할당 | [ ] |
 | `03-igw-attached.png` | IGW 상태 Attached, VPC ID | [ ] |
