@@ -65,7 +65,8 @@
 
 | 문서 | 언제 보나 |
 |---|---|
-| [docs/guide.md](docs/guide.md) | **실습할 때**: 설계 이유, 요청·응답 왕복, 11단계 따라 하기 |
+| [docs/guide.md](docs/guide.md) | **실습할 때**: 단계 목록과 진행 상태. 단계마다 할 일과 실제 기록(스크린샷) |
+| [docs/design.md](docs/design.md) | 설계 이유, 요청·응답 왕복 |
 | [docs/architecture.png](docs/architecture.png) | 제출물: 아키텍처 다이어그램 |
 | [docs/troubleshooting.md](docs/troubleshooting.md) | 제출물: 트러블슈팅 보고서 |
 | [docs/cleanup-checklist.md](docs/cleanup-checklist.md) | 제출물: 리소스 정리 체크리스트 |
