@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" font-family="-apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', 'Noto Sans CJK KR', sans-serif">
+<rect width="960" height="640" fill="#FFFFFF"/>
+<text x="30" y="38" font-size="17" fill="#2C2C2A" font-weight="bold" text-anchor="start">CIDR 읽는 법: IP 주소는 4칸(칸마다 8비트, 0~255). <tspan fill="#993C1D">/ 뒤 숫자 = 앞에서부터 고정하는 비트 수</tspan></text>
+<text x="304.0" y="68" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="middle">1번째 칸</text>
+<text x="424.0" y="68" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="middle">2번째 칸</text>
+<text x="544.0" y="68" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="middle">3번째 칸</text>
+<text x="664.0" y="68" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="middle">4번째 칸</text>
+<text x="30" y="104" font-size="15" fill="#185FA5" font-weight="bold" text-anchor="start">VPC</text>
+<text x="30" y="126" font-size="15" fill="#2C2C2A" font-weight="bold" text-anchor="start">10.0.0.0/16</text>
+<rect x="250" y="84" width="108" height="44" rx="6" fill="#EAF2FB" stroke="#185FA5" stroke-width="1.5"/>
+<text x="304.0" y="113" font-size="19" fill="#185FA5" font-weight="bold" text-anchor="middle">10</text>
+<rect x="370" y="84" width="108" height="44" rx="6" fill="#EAF2FB" stroke="#185FA5" stroke-width="1.5"/>
+<text x="424.0" y="113" font-size="19" fill="#185FA5" font-weight="bold" text-anchor="middle">0</text>
+<rect x="490" y="84" width="108" height="44" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="544.0" y="113" font-size="16" fill="#5F5E5A" font-weight="normal" text-anchor="middle">0~255</text>
+<rect x="610" y="84" width="108" height="44" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="664.0" y="113" font-size="16" fill="#5F5E5A" font-weight="normal" text-anchor="middle">0~255</text>
+<path d="M250 134 v6 H478 v-6" fill="none" stroke="#185FA5" stroke-width="1.5"/>
+<text x="364.0" y="158" font-size="13" fill="#185FA5" font-weight="bold" text-anchor="middle">고정 16비트</text>
+<path d="M490 134 v6 H718 v-6" fill="none" stroke="#5F5E5A" stroke-width="1.5"/>
+<text x="604.0" y="158" font-size="13" fill="#5F5E5A" font-weight="bold" text-anchor="middle">자유 16비트</text>
+<text x="740" y="102" font-size="14" fill="#2C2C2A" font-weight="normal" text-anchor="start">10.0.0.0 ~ 10.0.255.255</text>
+<text x="740" y="124" font-size="14" fill="#185FA5" font-weight="bold" text-anchor="start">256 × 256 = 65,536개</text>
+<text x="30" y="204" font-size="15" fill="#0F6E56" font-weight="bold" text-anchor="start">Subnet</text>
+<text x="30" y="226" font-size="15" fill="#2C2C2A" font-weight="bold" text-anchor="start">10.0.1.0/24</text>
+<rect x="250" y="184" width="108" height="44" rx="6" fill="#E6F4EE" stroke="#0F6E56" stroke-width="1.5"/>
+<text x="304.0" y="213" font-size="19" fill="#0F6E56" font-weight="bold" text-anchor="middle">10</text>
+<rect x="370" y="184" width="108" height="44" rx="6" fill="#E6F4EE" stroke="#0F6E56" stroke-width="1.5"/>
+<text x="424.0" y="213" font-size="19" fill="#0F6E56" font-weight="bold" text-anchor="middle">0</text>
+<rect x="490" y="184" width="108" height="44" rx="6" fill="#E6F4EE" stroke="#0F6E56" stroke-width="1.5"/>
+<text x="544.0" y="213" font-size="19" fill="#0F6E56" font-weight="bold" text-anchor="middle">1</text>
+<rect x="610" y="184" width="108" height="44" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="664.0" y="213" font-size="16" fill="#5F5E5A" font-weight="normal" text-anchor="middle">0~255</text>
+<path d="M250 234 v6 H598 v-6" fill="none" stroke="#0F6E56" stroke-width="1.5"/>
+<text x="424.0" y="258" font-size="13" fill="#0F6E56" font-weight="bold" text-anchor="middle">고정 24비트</text>
+<path d="M610 234 v6 H718 v-6" fill="none" stroke="#5F5E5A" stroke-width="1.5"/>
+<text x="664.0" y="258" font-size="13" fill="#5F5E5A" font-weight="bold" text-anchor="middle">자유 8비트</text>
+<text x="740" y="202" font-size="14" fill="#2C2C2A" font-weight="normal" text-anchor="start">10.0.1.0 ~ 10.0.1.255</text>
+<text x="740" y="224" font-size="14" fill="#0F6E56" font-weight="bold" text-anchor="start">256개 (AWS 예약 5 → 251)</text>
+<text x="30" y="304" font-size="15" fill="#3C3489" font-weight="bold" text-anchor="start">SSH 허용</text>
+<text x="30" y="326" font-size="15" fill="#2C2C2A" font-weight="bold" text-anchor="start">내 IP/32</text>
+<rect x="250" y="284" width="108" height="44" rx="6" fill="#EEEDFE" stroke="#3C3489" stroke-width="1.5"/>
+<text x="304.0" y="313" font-size="19" fill="#3C3489" font-weight="bold" text-anchor="middle">내 IP</text>
+<rect x="370" y="284" width="108" height="44" rx="6" fill="#EEEDFE" stroke="#3C3489" stroke-width="1.5"/>
+<text x="424.0" y="313" font-size="19" fill="#3C3489" font-weight="bold" text-anchor="middle">내 IP</text>
+<rect x="490" y="284" width="108" height="44" rx="6" fill="#EEEDFE" stroke="#3C3489" stroke-width="1.5"/>
+<text x="544.0" y="313" font-size="19" fill="#3C3489" font-weight="bold" text-anchor="middle">내 IP</text>
+<rect x="610" y="284" width="108" height="44" rx="6" fill="#EEEDFE" stroke="#3C3489" stroke-width="1.5"/>
+<text x="664.0" y="313" font-size="19" fill="#3C3489" font-weight="bold" text-anchor="middle">내 IP</text>
+<path d="M250 334 v6 H718 v-6" fill="none" stroke="#3C3489" stroke-width="1.5"/>
+<text x="484.0" y="358" font-size="13" fill="#3C3489" font-weight="bold" text-anchor="middle">고정 32비트</text>
+<text x="740" y="302" font-size="14" fill="#2C2C2A" font-weight="normal" text-anchor="start">내 IP 딱 하나</text>
+<text x="740" y="324" font-size="14" fill="#3C3489" font-weight="bold" text-anchor="start">1개</text>
+<text x="30" y="404" font-size="14" fill="#5F5E5A" font-weight="bold" text-anchor="start">숫자가 클수록 고정이 많아 범위가 좁다:</text>
+<text x="330" y="404" font-size="15" fill="#993C1D" font-weight="bold" text-anchor="start">/0</text>
+<text x="364" y="404" font-size="13" fill="#5F5E5A" font-weight="normal" text-anchor="start">전체 (HTTP 80)</text>
+<text x="476" y="404" font-size="16" fill="#5F5E5A" font-weight="bold" text-anchor="middle">›</text>
+<text x="490" y="404" font-size="15" fill="#185FA5" font-weight="bold" text-anchor="start">/16</text>
+<text x="524" y="404" font-size="13" fill="#5F5E5A" font-weight="normal" text-anchor="start">65,536개 (VPC)</text>
+<text x="636" y="404" font-size="16" fill="#5F5E5A" font-weight="bold" text-anchor="middle">›</text>
+<text x="650" y="404" font-size="15" fill="#0F6E56" font-weight="bold" text-anchor="start">/24</text>
+<text x="684" y="404" font-size="13" fill="#5F5E5A" font-weight="normal" text-anchor="start">256개 (Subnet)</text>
+<text x="796" y="404" font-size="16" fill="#5F5E5A" font-weight="bold" text-anchor="middle">›</text>
+<text x="810" y="404" font-size="15" fill="#3C3489" font-weight="bold" text-anchor="start">/32</text>
+<text x="844" y="404" font-size="13" fill="#5F5E5A" font-weight="normal" text-anchor="start">1개 (SSH 22)</text>
+<rect x="30" y="432" width="900" height="186" rx="10" fill="#EAF2FB" stroke="#185FA5" stroke-width="2"/>
+<text x="48" y="460" font-size="16" fill="#185FA5" font-weight="bold" text-anchor="start">VPC  b3-1-vpc  10.0.0.0/16</text>
+<text x="912" y="460" font-size="13" fill="#185FA5" font-weight="normal" text-anchor="end">= /24 크기 칸이 256개 들어가는 공간</text>
+<rect x="48" y="478" width="132" height="122" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="114.0" y="534" font-size="13" fill="#5F5E5A" font-weight="normal" text-anchor="middle">10.0.0.x</text>
+<text x="114.0" y="554" font-size="12" fill="#B4B2A9" font-weight="normal" text-anchor="middle">(비어 있음)</text>
+<rect x="192" y="478" width="132" height="122" rx="6" fill="#E6F4EE" stroke="#0F6E56" stroke-width="2"/>
+<text x="258.0" y="500" font-size="13" fill="#0F6E56" font-weight="bold" text-anchor="middle">Subnet</text>
+<text x="258.0" y="518" font-size="13" fill="#0F6E56" font-weight="bold" text-anchor="middle">10.0.1.0/24</text>
+<rect x="208" y="534" width="100" height="50" rx="5" fill="#FFFFFF" stroke="#2C2C2A" stroke-width="1.5"/>
+<text x="258.0" y="555" font-size="13" fill="#2C2C2A" font-weight="bold" text-anchor="middle">EC2</text>
+<text x="258.0" y="574" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="middle">10.0.1.?</text>
+<rect x="336" y="478" width="132" height="122" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="402.0" y="534" font-size="13" fill="#5F5E5A" font-weight="normal" text-anchor="middle">10.0.2.x</text>
+<text x="402.0" y="554" font-size="12" fill="#B4B2A9" font-weight="normal" text-anchor="middle">(비어 있음)</text>
+<rect x="480" y="478" width="132" height="122" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="546.0" y="534" font-size="13" fill="#5F5E5A" font-weight="normal" text-anchor="middle">10.0.3.x</text>
+<text x="546.0" y="554" font-size="12" fill="#B4B2A9" font-weight="normal" text-anchor="middle">(비어 있음)</text>
+<text x="696" y="544" font-size="24" fill="#5F5E5A" font-weight="bold" text-anchor="middle">…</text>
+<rect x="780" y="478" width="132" height="122" rx="6" fill="#FFFFFF" stroke="#B4B2A9" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="846.0" y="534" font-size="13" fill="#5F5E5A" font-weight="normal" text-anchor="middle">10.0.255.x</text>
+<text x="846.0" y="554" font-size="12" fill="#B4B2A9" font-weight="normal" text-anchor="middle">(비어 있음)</text>
+</svg>
