@@ -112,12 +112,12 @@
 
 ## 4. ✍️ 실제 기록
 
-**상태**: 🟡 진행 중 (①~⑤ 완료, ⑥ 📸 01 · ⑦ 로그인 전환 남음)
+**상태**: 🟡 진행 중 (①~⑥ 완료, ⑦ 로그인 전환 남음)
 
 | 항목 | 내용 |
 |---|---|
 | 한 날짜 | 2026-10-18 |
-| 결과 | ① 리전 서울 ② MFA 디바이스 `codyssey_project` 등록 ③ 제로 지출 예산 생성 ④ 정책 `b3-1-policy` 생성 (JSON 검사: 보안 0, 오류 0, 경고 0 / 검토 화면: EC2만, 조건 `aws:RequestedRegion = ap-northeast-2`) ⑤ 사용자 `b3-1-user` 생성 (콘솔 접근 O, 사용자 지정 암호, 암호 재설정 필요 아니요, 권한 정책 `b3-1-policy` 하나). 태그는 붙이지 않음 (사용자 태그는 선택 사항) |
+| 결과 | ① 리전 서울 ② MFA 디바이스 `codyssey_project` 등록 ③ 제로 지출 예산 생성 ④ 정책 `b3-1-policy` 생성 (JSON 검사: 보안 0, 오류 0, 경고 0 / 검토 화면: EC2만, 조건 `aws:RequestedRegion = ap-northeast-2`) ⑤ 사용자 `b3-1-user` 생성 (콘솔 접근 O, 사용자 지정 암호, 암호 재설정 필요 아니요, 권한 정책 `b3-1-policy` 하나). 태그는 붙이지 않음 (사용자 태그는 선택 사항) ⑥ 📸 01: `b3-1-user`의 권한 정책은 `b3-1-policy` 하나(고객 관리형, 직접 연결), 권한 경계 없음 |
 | 막힌 점 | MFA 등록 때 `Authentication code for device is not valid` 에러. 페이지를 새로고침해 QR(비밀키)이 바뀌었는데, 앱에는 이전 QR로 만든 항목이 남아 있어 그 코드를 넣은 것이 원인. 앱의 기존 항목을 지우고 새 QR을 다시 스캔해 해결 |
 | 내 말로 한 줄 | (작성 예정) |
 
@@ -174,6 +174,10 @@
 #### ④ 확인: 정책 요약에 서비스는 **EC2 하나**, 조건은 서울 리전
 
 ![정책 요약](../images/00m-iam-policy-summary.png)
+
+#### ⑥ 📸 01: `b3-1-user`의 권한 탭 (정책은 `b3-1-policy` 하나, AdministratorAccess 없음)
+
+![사용자 권한](../images/01-iam-user-policy.png)
 
 > **왜 EC2 하나만 보이나?** AWS에서 VPC, Subnet, Internet Gateway, Route Table, Security Group, 키 페어는 모두 **EC2 서비스의 API**(`ec2:CreateVpc`, `ec2:CreateSubnet` …)로 만들어집니다. 그래서 이 과제에 필요한 권한이 전부 EC2 한 줄로 묶여 보이고, S3·RDS·IAM 같은 다른 서비스는 하나도 없습니다. 이것이 "최소 권한"의 근거입니다.
 
