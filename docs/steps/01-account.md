@@ -112,12 +112,12 @@
 
 ## 4. ✍️ 실제 기록
 
-**상태**: 🟡 진행 중 (①~③ 완료, ④~⑦ 남음)
+**상태**: 🟡 진행 중 (①~④ 완료, ⑤~⑦ 남음)
 
 | 항목 | 내용 |
 |---|---|
 | 한 날짜 | 2026-10-18 |
-| 결과 | ① 리전 서울 ② MFA 디바이스 `codyssey_project` 등록 ③ 제로 지출 예산 생성 |
+| 결과 | ① 리전 서울 ② MFA 디바이스 `codyssey_project` 등록 ③ 제로 지출 예산 생성 ④ 정책 `b3-1-policy` 생성 (JSON 검사: 보안 0, 오류 0, 경고 0 / 검토 화면: EC2만, 조건 `aws:RequestedRegion = ap-northeast-2`) |
 | 막힌 점 | MFA 등록 때 `Authentication code for device is not valid` 에러. 페이지를 새로고침해 QR(비밀키)이 바뀌었는데, 앱에는 이전 QR로 만든 항목이 남아 있어 그 코드를 넣은 것이 원인. 앱의 기존 항목을 지우고 새 QR을 다시 스캔해 해결 |
 | 내 말로 한 줄 | (작성 예정) |
 
@@ -134,6 +134,18 @@
 #### ② QR 스캔 후 연속 코드 2개 입력 (QR은 비밀키라 가림)
 
 ![MFA 설정](../images/00c-mfa-setup.png)
+
+#### ④ IAM → 정책 → 정책 생성
+
+![정책 생성](../images/00d-iam-policy-create.png)
+
+#### ④ JSON 탭에 정책 붙여넣기 (보안·오류·경고 0)
+
+![정책 JSON](../images/00e-iam-policy-json.png)
+
+#### ④ 검토: 이름 `b3-1-policy`, 허용 서비스는 EC2 하나, 요청 조건은 서울 리전
+
+![정책 검토](../images/00f-iam-policy-review.png)
 
 > 계정 ID 등 개인 정보는 이미지에서 가렸습니다.
 
