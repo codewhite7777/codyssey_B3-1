@@ -6,7 +6,7 @@
 
 | 단계 | 문서 | 하는 일 | 📸 | 상태 |
 |---|---|---|---|---|
-| 1 | [계정 준비](steps/01-account.md) | MFA, 결제 알림, 최소 권한 IAM 사용자 | 00a~00k, 01 | 🟡 진행 중 (①~⑤) |
+| 1 | [계정 준비](steps/01-account.md) | MFA, 결제 알림, 최소 권한 IAM 사용자 | 00a~00m, 01 | 🟡 진행 중 (①~⑤) |
 | 2 | [VPC·Subnet](steps/02-vpc-subnet.md) | 격리된 네트워크와 서버 구역 | 02 | ⬜ |
 | 3 | [Internet Gateway](steps/03-igw.md) | 인터넷과 연결되는 정문 | 03 | ⬜ |
 | 4 | [Route Table](steps/04-route-table.md) | `0.0.0.0/0 → IGW` 나가는 길 | 04 | ⬜ |

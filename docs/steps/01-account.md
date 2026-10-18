@@ -167,6 +167,16 @@
 
 ![생성 완료](../images/00k-iam-user-created.png)
 
+#### ⑤ 확인: IAM 사용자 목록에 `b3-1-user` 1명
+
+![사용자 목록](../images/00l-iam-user-created-list.png)
+
+#### ④ 확인: 정책 요약에 서비스는 **EC2 하나**, 조건은 서울 리전
+
+![정책 요약](../images/00m-iam-policy-summary.png)
+
+> **왜 EC2 하나만 보이나?** AWS에서 VPC, Subnet, Internet Gateway, Route Table, Security Group, 키 페어는 모두 **EC2 서비스의 API**(`ec2:CreateVpc`, `ec2:CreateSubnet` …)로 만들어집니다. 그래서 이 과제에 필요한 권한이 전부 EC2 한 줄로 묶여 보이고, S3·RDS·IAM 같은 다른 서비스는 하나도 없습니다. 이것이 "최소 권한"의 근거입니다.
+
 > 계정 ID 등 개인 정보는 이미지에서 가렸습니다.
 
 ---

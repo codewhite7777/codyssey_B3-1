@@ -15,6 +15,8 @@
 | `00i-iam-user-permissions.png` | (준비) 직접 정책 연결: b3-1-policy | [x] |
 | `00j-iam-user-review.png` | (준비) 검토 및 생성 | [x] |
 | `00k-iam-user-created.png` | (준비) 생성 완료 (로그인 URL 가림) | [x] |
+| `00l-iam-user-created-list.png` | (준비) IAM 사용자 목록에 b3-1-user | [x] |
+| `00m-iam-policy-summary.png` | (준비) 정책 요약: EC2 하나, 서울 조건 | [x] |
 | `01-iam-user-policy.png` | IAM 사용자와 연결된 정책 (AdministratorAccess 없음) | [ ] |
 | `02-vpc-subnet.png` | VPC CIDR, Subnet CIDR·AZ·퍼블릭 IP 자동 할당 | [ ] |
 | `03-igw-attached.png` | IGW 상태 Attached, VPC ID | [ ] |
