@@ -72,7 +72,6 @@ curl -i http://localhost/health
 | 한 날짜 | |
 | 결과 | |
 | 막힌 점 | |
-| 내 말로 한 줄 | |
 
 ---
 
