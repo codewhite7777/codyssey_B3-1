@@ -20,7 +20,9 @@
 | `01-iam-user-policy.png` | IAM 사용자와 연결된 정책 (AdministratorAccess 없음) | [x] |
 | `02a-vpc-create.png` | VPC 생성 입력 (VPC만, `10.0.0.0/16`, 태그 2개) | [x] |
 | `02b-vpc-created.png` | VPC 생성 결과 (VPC ID, Available) | [x] |
-| `02-vpc-subnet.png` | VPC CIDR, Subnet CIDR·AZ·퍼블릭 IP 자동 할당 | [ ] |
+| `02c-subnet-create.png` | 서브넷 생성 입력 | [x] |
+| `02d-subnet-public-ip.png` | 퍼블릭 IPv4 자동 할당 활성화 | [x] |
+| `02-vpc-subnet.png` | 서브넷 상세: CIDR·AZ·VPC·퍼블릭 IP 자동 할당 예 | [x] |
 | `03-igw-attached.png` | IGW 상태 Attached, VPC ID | [ ] |
 | `04-route-table.png` | 경로(`0.0.0.0/0 → igw-`) + 서브넷 연결 탭 | [ ] |
 | `05-security-group.png` | 인바운드 규칙 2개 (80 전체, 22 내 IP/32) | [ ] |

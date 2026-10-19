@@ -5,7 +5,7 @@
 | # | 리소스 | 이름 | ID | 생성일 | 삭제 확인 |
 |---|---|---|---|---|---|
 | 1 | VPC | `b3-1-vpc` | `vpc-07f1142c4fd787dde` | 2026-10-18 | [ ] |
-| 2 | Subnet | `b3-1-subnet-public` | `subnet-` | | [ ] |
+| 2 | Subnet | `b3-1-subnet-public` | `subnet-0d9ef94b777f72943` | 2026-10-20 | [ ] |
 | 3 | Internet Gateway | `b3-1-igw` | `igw-` | | [ ] |
 | 4 | Route Table | `b3-1-rt-public` | `rtb-` | | [ ] |
 | 5 | Security Group | `b3-1-sg-web` | `sg-` | | [ ] |
