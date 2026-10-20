@@ -60,7 +60,8 @@
 | `13o-igw-deleted.png` | IGW 삭제 후 목록 (받을 예정) | [ ] |
 | `13p0-vpc-delete-menu.png` | VPC 삭제 메뉴 | [x] |
 | `13p-vpc-deleted.png` | VPC 삭제 완료, 기본 VPC만 | [x] |
-| `13q~` | 전체 확인 (Global View) | [ ] |
+| `13q-global-view.png` | 글로벌 보기 리전 탐색기, 모두 0 | [x] |
+| `13r-global-search.png` | 글로벌 검색, 기본 리소스와 종료된 인스턴스만 | [x] |
 | `keypair.svg`, `cleanup_order.svg` | 설명 그림: 키 페어 역할, 정리 순서 | [x] |
 
 퍼블릭 IP는 EC2를 Stop/Start하면 바뀐다. IP가 보이는 06, 07, 10은 같은 날 한 번에 찍는다.
