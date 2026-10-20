@@ -57,7 +57,10 @@
 | `13m-rt-deleted.png` | 라우팅 테이블 삭제 완료, 기본 2개만 남음 | [x] |
 | `13n0-igw-detach-menu.png` | IGW 분리 메뉴 (삭제는 비활성) | [x] |
 | `13n-igw-detached.png` | IGW Detached | [x] |
-| `13o~` | 나머지 정리 확인 (진행 중) | [ ] |
+| `13o-igw-deleted.png` | IGW 삭제 후 목록 (받을 예정) | [ ] |
+| `13p0-vpc-delete-menu.png` | VPC 삭제 메뉴 | [x] |
+| `13p-vpc-deleted.png` | VPC 삭제 완료, 기본 VPC만 | [x] |
+| `13q~` | 전체 확인 (Global View) | [ ] |
 | `keypair.svg`, `cleanup_order.svg` | 설명 그림: 키 페어 역할, 정리 순서 | [x] |
 
 퍼블릭 IP는 EC2를 Stop/Start하면 바뀐다. IP가 보이는 06, 07, 10은 같은 날 한 번에 찍는다.
