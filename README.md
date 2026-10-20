@@ -50,8 +50,8 @@
 | VPC, Public Subnet | `10.0.0.0/16`, `10.0.1.0/24`, 퍼블릭 IP 자동 할당, `0.0.0.0/0 → IGW` 테이블 연결 | 📸 02, 04 | ✅ |
 | IGW를 VPC에 연결 | `b3-1-igw` Attached | 📸 03 | ✅ |
 | Route Table `0.0.0.0/0 → IGW` | `b3-1-rt-public`을 서브넷에 연결 | 📸 04 | ✅ |
-| 인스턴스 아웃바운드 | EC2에서 `curl -I https://example.com` 200 | 📸 08 | ⬜ |
-| EC2 1대, SSH 접속 | t3.micro, 내 IP에서 키로 접속 | 📸 06, 07 | 🟡 |
+| 인스턴스 아웃바운드 | EC2에서 `curl -I https://example.com` → `HTTP/2 200` | 📸 08 | ✅ |
+| EC2 1대, SSH 접속 | t3.micro, 내 IP에서 키로 접속 | 📸 06, 07 | ✅ |
 | 웹 서버 실행, `curl localhost` 200 | Nginx `active (running)` | 📸 09 | ⬜ |
 | SG 필요 포트만 | 80 ← `0.0.0.0/0`, 22 ← 내 IP `/32`, 전체 포트 규칙 없음 | 📸 05 | ✅ |
 | IAM 최소 권한 | EC2 액션만, 생성·삭제는 서울 리전만, S3/RDS·관리자 권한 없음 | 📸 01, [iam-policy.json](docs/iam-policy.json) | ✅ |
