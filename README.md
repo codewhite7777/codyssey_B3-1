@@ -60,7 +60,7 @@
 | 외부 접속 검증 (B) | `/health` → 200 OK, `OK` | 📸 10, 위 2장 | ✅ |
 | 아키텍처 다이어그램 | VPC, Subnet, IGW, Route Table, SG, EC2, 요청 흐름 | [architecture.png](docs/architecture.png) | ✅ |
 | 트러블슈팅 보고서 | 휴대폰 Chrome만 timeout → 가설 3개 → Mac `curl`·LTE·다른 브라우저로 하나씩 제외 → Chrome 문제로 확정, 443은 열지 않음 | 📸 11, [troubleshooting.md](docs/troubleshooting.md) | ✅ |
-| 리소스 정리 5종 | EC2, EBS, Elastic IP(할당 안 함), IGW, VPC | 📸 13a~, [cleanup-checklist.md](docs/cleanup-checklist.md) | 🟡 |
+| 리소스 정리 5종 | EC2 종료, EBS 자동 삭제, Elastic IP 없음 확인, IGW 분리 후 삭제, VPC 삭제 → 글로벌 보기에서 모든 리전 확인 | 📸 13a~13s, [cleanup-checklist.md](docs/cleanup-checklist.md) | ✅ |
 | 제약: 루트 미사용, 서울 리전, 프리 티어 | 루트는 IAM 사용자 생성까지만, t3.micro(크레딧 Standard), EIP·NAT·ALB 만들지 않음 | 📸 01, 06, 06b | ✅ |
 
 ## 4. 과정 따라보기
@@ -151,9 +151,11 @@
 
 - **무엇을**: 만든 리소스를 **안쪽부터** 삭제 (EC2 → 키 페어 → SG → 서브넷·라우팅 테이블 → IGW → VPC)
 - **왜**: 남은 EC2·EBS·Elastic IP 등은 비용이 나간다
-- **어떻게**: [정리 체크리스트](docs/cleanup-checklist.md)의 ID 목록대로 지우고 확인 (🟡 진행 중: EC2·EBS·탄력적 IP·키 페어·보안 그룹·서브넷·라우팅 테이블·VPC 완료)
+- **어떻게**: [정리 체크리스트](docs/cleanup-checklist.md)의 ID 목록대로 아래 그림의 번호 순서로 지우고, 마지막에 **AWS 글로벌 보기**로 모든 리전에 남은 것이 없음을 확인 (남은 과금 리소스 없음)
 
 ![정리 순서](docs/images/cleanup_order.svg)
+
+![글로벌 보기 요약 0](docs/images/13q-global-view.png)
 
 ## 5. 문서
 

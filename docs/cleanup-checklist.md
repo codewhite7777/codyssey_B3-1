@@ -6,7 +6,7 @@
 |---|---|---|---|---|---|
 | 1 | VPC | `b3-1-vpc` | `vpc-07f1142c4fd787dde` | 2026-10-18 | [x] 삭제 |
 | 2 | Subnet | `b3-1-subnet-public` | `subnet-0d9ef94b777f72943` | 2026-10-20 | [x] 삭제 |
-| 3 | Internet Gateway | `b3-1-igw` | `igw-0d57e59b8c617f4e0` | 2026-10-20 | [ ] |
+| 3 | Internet Gateway | `b3-1-igw` | `igw-0d57e59b8c617f4e0` | 2026-10-20 | [x] 분리 후 삭제 |
 | 4 | Route Table | `b3-1-rt-public` | `rtb-03c65969cf2c394ad` | 2026-10-20 | [x] 삭제 |
 | 5 | Security Group | `b3-1-sg-web` | `sg-0b70263b7d5833f46` | 2026-10-20 | [x] 삭제 |
 | 6 | Key Pair | `b3-1-key` | — | 2026-10-20 | [x] AWS·내 PC 모두 삭제 |
@@ -20,7 +20,7 @@
 
 안에 들어 있는 것부터 지워야 바깥 리소스가 삭제된다.
 
-- [ ] **스크린샷 01~12가 `docs/images/`에 모두 있는지 먼저 확인** (삭제 후에는 다시 찍을 수 없음)
+- [x] **스크린샷 01~12가 `docs/images/`에 모두 있는지 먼저 확인** (삭제 후에는 다시 찍을 수 없음)
 - [x] 1. **EC2** Terminate → 상태 `Terminated` 확인
   - Terminated 상태는 약 1시간만 보이므로 **바로** 스크린샷 13을 찍는다
 - [x] 2. **EBS** 볼륨 목록에 `vol-0fab396aa4c25564a`가 없는지 확인 (미사용 볼륨 포함 0개)
@@ -29,26 +29,26 @@
 - [x] 5. **Security Group** `b3-1-sg-web` 삭제
 - [x] 6. **Subnet** 삭제
 - [x] 7. **Route Table** `b3-1-rt-public` 삭제
-- [ ] 8. **Internet Gateway** VPC에서 Detach → 삭제
+- [x] 8. **Internet Gateway** VPC에서 Detach → 삭제
 - [x] 9. **VPC** `b3-1-vpc` 삭제
 
 ## 3. 만들지 않은 과금 리소스 (해당 없음 확인)
 
-- [ ] NAT Gateway: 만들지 않음, 목록 0개 확인
-- [ ] ELB/ALB: 만들지 않음, 목록 0개 확인
-- [ ] RDS: 만들지 않음, 목록 0개 확인
-- [ ] EBS 스냅샷: 만들지 않음, 목록 0개 확인
+- [x] NAT Gateway: 만들지 않음 (글로벌 보기 요약 0)
+- [x] ELB/ALB: 만들지 않음 (글로벌 보기 요약 0)
+- [x] RDS: 만들지 않음 (정책상 RDS 권한도 없음)
+- [x] EBS 스냅샷: 만들지 않음 (13b 화면의 스냅샷 요약 0/0)
 
 ## 4. 최종 확인
 
-- [ ] EC2 Global View에서 모든 리전의 인스턴스·VPC 확인 (기본 VPC 제외)
+- [x] EC2 Global View에서 모든 리전의 인스턴스·VPC 확인 (기본 VPC 제외) → 요약 0, `b3-1` 검색 1개(종료된 인스턴스) (13q, 13s)
 - [ ] (권장) Billing Dashboard에서 과금 항목 확인
 
 ## 5. 최종 기록
 
 | 항목 | 내용 |
 |---|---|
-| 정리 일시 | `2026-__-__ __:__` (KST) |
+| 정리 일시 | 2026-10-20 11:34 ~ 12:18 (KST) |
 | 리전 | `ap-northeast-2` |
-| 남은 과금 리소스 | 없음 / ____ |
+| 남은 과금 리소스 | **없음** (기본 VPC와 IAM 사용자만 남음, 둘 다 무료) |
 | 증빙 | [13a-ec2-terminated.png](images/13a-ec2-terminated.png), [13b-ebs-volumes-empty.png](images/13b-ebs-volumes-empty.png) 외 ([11단계 기록](steps/11-cleanup.md#4--실제-기록)) |
