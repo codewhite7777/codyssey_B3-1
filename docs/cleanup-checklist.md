@@ -5,7 +5,7 @@
 | # | 리소스 | 이름 | ID | 생성일 | 삭제 확인 |
 |---|---|---|---|---|---|
 | 1 | VPC | `b3-1-vpc` | `vpc-07f1142c4fd787dde` | 2026-10-18 | [ ] |
-| 2 | Subnet | `b3-1-subnet-public` | `subnet-0d9ef94b777f72943` | 2026-10-20 | [ ] |
+| 2 | Subnet | `b3-1-subnet-public` | `subnet-0d9ef94b777f72943` | 2026-10-20 | [x] 삭제 |
 | 3 | Internet Gateway | `b3-1-igw` | `igw-0d57e59b8c617f4e0` | 2026-10-20 | [ ] |
 | 4 | Route Table | `b3-1-rt-public` | `rtb-03c65969cf2c394ad` | 2026-10-20 | [ ] |
 | 5 | Security Group | `b3-1-sg-web` | `sg-0b70263b7d5833f46` | 2026-10-20 | [x] 삭제 |
@@ -27,7 +27,7 @@
 - [x] 3. **Elastic IP** 목록이 비어 있는지 확인 → 할당하지 않음. 쓰지 않았어도 연결 안 된 EIP는 과금되므로 **직접 확인함** ("이 리전에서 탄력적 IP 주소를 찾을 수 없음", 📸 13c)
 - [x] 4. **Key Pair** `b3-1-key` 삭제 (로컬 `.pem` 파일도 삭제, `known_hosts` 기록 제거)
 - [x] 5. **Security Group** `b3-1-sg-web` 삭제
-- [ ] 6. **Subnet** 삭제
+- [x] 6. **Subnet** 삭제
 - [ ] 7. **Route Table** `b3-1-rt-public` 삭제
 - [ ] 8. **Internet Gateway** VPC에서 Detach → 삭제
 - [ ] 9. **VPC** `b3-1-vpc` 삭제

@@ -151,7 +151,7 @@
 
 - **무엇을**: 만든 리소스를 **안쪽부터** 삭제 (EC2 → 키 페어 → SG → 서브넷·라우팅 테이블 → IGW → VPC)
 - **왜**: 남은 EC2·EBS·Elastic IP 등은 비용이 나간다
-- **어떻게**: [정리 체크리스트](docs/cleanup-checklist.md)의 ID 목록대로 지우고 확인 (🟡 진행 중: EC2·EBS·탄력적 IP·키 페어·보안 그룹 완료)
+- **어떻게**: [정리 체크리스트](docs/cleanup-checklist.md)의 ID 목록대로 지우고 확인 (🟡 진행 중: EC2·EBS·탄력적 IP·키 페어·보안 그룹·서브넷 완료)
 
 ![정리 순서](docs/images/cleanup_order.svg)
 
