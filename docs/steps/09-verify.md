@@ -55,7 +55,7 @@ README의 [외부 접속 검증](../../README.md#2-외부-접속-검증) 표에 
 
 ### 4-2. 막힌 점과 해결
 
-없음.
+외부 검증 직후 **휴대폰 Chrome에서만** timeout이 나는 문제를 겪음. Mac(200 OK)과 삼성 인터넷(OK)으로 서버는 정상임을 확인하고 Chrome 클라이언트 문제로 좁힘 → [트러블슈팅 사례 2](../troubleshooting.md#사례-2-휴대폰-chrome에서만-health-접속-실패-timeout)
 
 ### 4-3. 스크린샷
 

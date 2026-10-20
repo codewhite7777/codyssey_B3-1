@@ -37,6 +37,7 @@
 | `09-localhost-200.png` | `systemctl status nginx` + `curl -i http://localhost/health` | [x] |
 | `10-external-health.png` | **내 PC**에서 `curl -i http://<퍼블릭IP>/health` | [x] |
 | `10b-external-browser.png` | 브라우저 `/health` → OK | [x] |
+| `ts2-mobile-chrome.png` | 트러블슈팅 사례 2: 휴대폰 Chrome timeout vs 삼성 인터넷 OK | [x] |
 | `11-troubleshoot-before.png` | 장애 상황 (timeout, SG 규칙) | [ ] |
 | `12-troubleshoot-after.png` | 조치 후 정상 응답 | [ ] |
 | `13-cleanup.png` | EC2 Terminated, 볼륨 0개, VPC 목록 | [ ] |

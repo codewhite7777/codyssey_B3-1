@@ -57,7 +57,7 @@
 | IAM 최소 권한 | EC2 액션만, 생성·삭제는 서울 리전만, S3/RDS·관리자 권한 없음 | 📸 01, [iam-policy.json](docs/iam-policy.json) | ✅ |
 | 외부 접속 검증 (B) | `/health` → 200 OK, `OK` | 📸 10, 위 2장 | ✅ |
 | 아키텍처 다이어그램 | VPC, Subnet, IGW, Route Table, SG, EC2, 요청 흐름 | [architecture.png](docs/architecture.png) | ✅ |
-| 트러블슈팅 보고서 | SG 80 제거 → timeout → 근거로 원인 확인 → 복구 | 📸 11, 12, [troubleshooting.md](docs/troubleshooting.md) | ⬜ |
+| 트러블슈팅 보고서 | 사례 1: SG 80 제거 → timeout → 근거로 원인 확인 → 복구 (진행 전)<br>사례 2: 휴대폰 Chrome만 timeout → 다른 클라이언트로 범위 축소 (완료) | 📸 11, 12, ts2, [troubleshooting.md](docs/troubleshooting.md) | 🟡 |
 | 리소스 정리 5종 | EC2, EBS, Elastic IP(할당 안 함), IGW, VPC | 📸 13, [cleanup-checklist.md](docs/cleanup-checklist.md) | ⬜ |
 | 제약: 루트 미사용, 서울 리전, 프리 티어 | 루트는 IAM 사용자 생성까지만, t3.micro(크레딧 Standard), EIP·NAT·ALB 만들지 않음 | 📸 01, 06, 06b | ✅ |
 
