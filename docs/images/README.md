@@ -39,7 +39,10 @@
 | `10b-external-browser.png` | 브라우저 `/health` → OK | [x] |
 | `11-troubleshoot-mobile-chrome.png` | 트러블슈팅 요약: 휴대폰 Chrome timeout vs 삼성 인터넷 OK | [x] |
 | `11a`~`11e` | 트러블슈팅 과정: Chrome 설정 켜짐·끔, timeout, 세부정보, 삼성 인터넷 OK | [x] |
-| `13-cleanup.png` | EC2 Terminated, 볼륨 0개, VPC 목록 | [ ] |
+| `13-ec2-terminate-confirm.png` | EC2 종료 확인 창 | [x] |
+| `13a-ec2-terminated.png` | EC2 상태 종료됨 | [x] |
+| `13b-ebs-volumes-empty.png` | EBS 볼륨 없음 | [x] |
+| `13c~` | 나머지 정리 확인 (진행 중) | [ ] |
 
 퍼블릭 IP는 EC2를 Stop/Start하면 바뀐다. IP가 보이는 06, 07, 10은 같은 날 한 번에 찍는다.
 

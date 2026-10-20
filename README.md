@@ -60,7 +60,7 @@
 | 외부 접속 검증 (B) | `/health` → 200 OK, `OK` | 📸 10, 위 2장 | ✅ |
 | 아키텍처 다이어그램 | VPC, Subnet, IGW, Route Table, SG, EC2, 요청 흐름 | [architecture.png](docs/architecture.png) | ✅ |
 | 트러블슈팅 보고서 | 휴대폰 Chrome만 timeout → 가설 3개 → Mac `curl`·LTE·다른 브라우저로 하나씩 제외 → Chrome 문제로 확정, 443은 열지 않음 | 📸 11, [troubleshooting.md](docs/troubleshooting.md) | ✅ |
-| 리소스 정리 5종 | EC2, EBS, Elastic IP(할당 안 함), IGW, VPC | 📸 13, [cleanup-checklist.md](docs/cleanup-checklist.md) | ⬜ |
+| 리소스 정리 5종 | EC2, EBS, Elastic IP(할당 안 함), IGW, VPC | 📸 13a~, [cleanup-checklist.md](docs/cleanup-checklist.md) | 🟡 |
 | 제약: 루트 미사용, 서울 리전, 프리 티어 | 루트는 IAM 사용자 생성까지만, t3.micro(크레딧 Standard), EIP·NAT·ALB 만들지 않음 | 📸 01, 06, 06b | ✅ |
 
 ## 4. 과정 따라보기
