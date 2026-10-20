@@ -26,10 +26,10 @@
 | 7 | SSH 접속 | 내 PC에서 서버에 들어가 설정 | refused |
 | 8 | Nginx, `/health` | 80에서 요청을 받아 `OK` 응답 | **200 OK** ✔ |
 | 9 | 외부 검증 | 내 PC에서 전체 경로가 열렸음을 증명 | 200 OK (📸 증빙) |
-| 10 | 트러블슈팅 | SG의 80을 잠시 빼서 고장을 재현 | **timeout** → 복구 후 200 OK |
+| 10 | 트러블슈팅 | 실제로 겪은 장애(휴대폰 Chrome만 timeout)를 근거로 진단 | 서버는 계속 200 OK |
 | 11 | 리소스 정리 | 안쪽부터 삭제해 과금 요인 제거 | 응답 없음 |
 
-> **refused**는 요청이 서버까지 **왔지만** 받을 프로그램이 없는 것(6단계), **timeout**은 서버까지 **오지 못한** 것(10단계)입니다. 그래서 장애가 나면 timeout은 바깥(라우팅, SG, 퍼블릭 IP)부터, refused는 서버 안(Nginx)부터 봅니다.
+> **refused**는 요청이 서버까지 **왔지만** 받을 프로그램이 없는 것(6단계), **timeout**은 응답이 **아예 오지 않은** 것([트러블슈팅](docs/troubleshooting.md))입니다. 그래서 장애가 나면 timeout은 바깥(라우팅, SG, 퍼블릭 IP)부터, refused는 서버 안(Nginx)부터 봅니다.
 
 단계별 자세한 방법은 [실습 가이드](docs/guide.md)에 있습니다.
 
@@ -57,7 +57,7 @@
 | IAM 최소 권한 | EC2 액션만, 생성·삭제는 서울 리전만, S3/RDS·관리자 권한 없음 | 📸 01, [iam-policy.json](docs/iam-policy.json) | ✅ |
 | 외부 접속 검증 (B) | `/health` → 200 OK, `OK` | 📸 10, 위 2장 | ✅ |
 | 아키텍처 다이어그램 | VPC, Subnet, IGW, Route Table, SG, EC2, 요청 흐름 | [architecture.png](docs/architecture.png) | ✅ |
-| 트러블슈팅 보고서 | 사례 1: SG 80 제거 → timeout → 근거로 원인 확인 → 복구 (진행 전)<br>사례 2: 휴대폰 Chrome만 timeout → 다른 클라이언트로 범위 축소 (완료) | 📸 11, 12, ts2, [troubleshooting.md](docs/troubleshooting.md) | 🟡 |
+| 트러블슈팅 보고서 | 휴대폰 Chrome만 timeout → 가설 3개 → Mac `curl`·LTE·다른 브라우저로 하나씩 제외 → Chrome 문제로 확정, 443은 열지 않음 | 📸 11, [troubleshooting.md](docs/troubleshooting.md) | ✅ |
 | 리소스 정리 5종 | EC2, EBS, Elastic IP(할당 안 함), IGW, VPC | 📸 13, [cleanup-checklist.md](docs/cleanup-checklist.md) | ⬜ |
 | 제약: 루트 미사용, 서울 리전, 프리 티어 | 루트는 IAM 사용자 생성까지만, t3.micro(크레딧 Standard), EIP·NAT·ALB 만들지 않음 | 📸 01, 06, 06b | ✅ |
 

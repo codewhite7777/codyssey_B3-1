@@ -41,7 +41,7 @@ SG는 서버로 오는 패킷을, IAM은 AWS를 조작하는 API 호출을 통�
 포트 스캔 봇이 항상 돌고 있어 바로 무차별 대입 공격을 받습니다. SSH는 내 IP `/32`와 키 인증(또는 Session Manager)으로, DB는 Private Subnet에 두고 앱 서버 SG에서 오는 것만 허용합니다.
 
 **Q. 트러블슈팅에서 왜 가설 → 검증 순서를 지켰나?**
-한 번에 여러 개를 바꾸면 원인을 알 수 없고, "다 열기" 같은 위험한 해결로 가기 쉽기 때문입니다. `curl`의 timeout/refused 차이, `access.log` 기록 유무, 콘솔 화면을 근거로 썼습니다. ([troubleshooting.md](troubleshooting.md))
+한 번에 여러 개를 바꾸면 원인을 알 수 없고, "443도 열기" 같은 위험한 해결로 가기 쉽기 때문입니다. 휴대폰 Chrome만 timeout이 났을 때 서버를 고치지 않고, 같은 요청을 Mac `curl`(200), LTE, 다른 브라우저(OK)로 바꿔 가며 서버·네트워크를 하나씩 제외해 Chrome 문제로 확정했습니다. ([troubleshooting.md](troubleshooting.md))
 
 ## 항목 4. 상황이 바뀌면
 

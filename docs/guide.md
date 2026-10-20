@@ -15,7 +15,7 @@
 | 7 | [SSH·아웃바운드](steps/07-ssh.md) | 서버 접속, 서버 → 인터넷 확인 | 07, 08 | ✅ 완료 |
 | 8 | [Nginx·`/health`](steps/08-nginx.md) | 웹 서버 설치, `OK` 응답 | 09a, 09b, 09 | ✅ 완료 |
 | 9 | [외부 검증](steps/09-verify.md) | 내 PC에서 200 OK | 10, 10b | ✅ 완료 |
-| 10 | [트러블슈팅](steps/10-troubleshoot.md) | SG 80 빼서 timeout 재현 | 11, 12 | ⬜ |
+| 10 | [트러블슈팅](steps/10-troubleshoot.md) | 실제 장애(휴대폰 Chrome) 진단·기록 | 11 | ✅ 완료 |
 | 11 | [정리](steps/11-cleanup.md) | 안쪽부터 삭제 | 13 | ⬜ |
 
 상태: ⬜ 진행 전 · 🟡 진행 중 · ✅ 완료
