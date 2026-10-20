@@ -53,7 +53,7 @@
 | 인스턴스 아웃바운드 | EC2에서 `curl -I https://example.com` 200 | 📸 08 | ⬜ |
 | EC2 1대, SSH 접속 | t3.micro, 내 IP에서 키로 접속 | 📸 06, 07 | ⬜ |
 | 웹 서버 실행, `curl localhost` 200 | Nginx `active (running)` | 📸 09 | ⬜ |
-| SG 필요 포트만 | 80 ← `0.0.0.0/0`, 22 ← 내 IP `/32`, 전체 포트 규칙 없음 | 📸 05 | ⬜ |
+| SG 필요 포트만 | 80 ← `0.0.0.0/0`, 22 ← 내 IP `/32`, 전체 포트 규칙 없음 | 📸 05 | ✅ |
 | IAM 최소 권한 | EC2 액션만, 생성·삭제는 서울 리전만, S3/RDS·관리자 권한 없음 | 📸 01, [iam-policy.json](docs/iam-policy.json) | ✅ |
 | 외부 접속 검증 (B) | `/health` → 200 OK, `OK` | 📸 10, 위 2장 | ⬜ |
 | 아키텍처 다이어그램 | VPC, Subnet, IGW, Route Table, SG, EC2, 요청 흐름 | [architecture.png](docs/architecture.png) | ✅ |
