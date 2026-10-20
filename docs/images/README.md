@@ -50,7 +50,8 @@
 | `13h-sg-delete.png` | 보안 그룹 삭제 메뉴 | [x] |
 | `13i-sg-deleted-banner.png` | 보안 그룹 삭제 완료 배너 | [x] |
 | `13j-sg-list.png` | 보안 그룹 (2), default만 남음 | [x] |
-| `13k~` | 나머지 정리 확인 (진행 중) | [ ] |
+| `13k-subnet-delete.png` | 서브넷 삭제 확인 창 (RAM 조회 권한 안내) | [x] |
+| `13l~` | 나머지 정리 확인 (진행 중) | [ ] |
 | `keypair.svg`, `cleanup_order.svg` | 설명 그림: 키 페어 역할, 정리 순서 | [x] |
 
 퍼블릭 IP는 EC2를 Stop/Start하면 바뀐다. IP가 보이는 06, 07, 10은 같은 날 한 번에 찍는다.
