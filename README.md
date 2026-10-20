@@ -47,9 +47,9 @@
 
 | 요구 | 어떻게 했나 | 근거 | 상태 |
 |---|---|---|---|
-| VPC, Public Subnet | `10.0.0.0/16`, `10.0.1.0/24`, 퍼블릭 IP 자동 할당 (퍼블릭 경로는 4단계) | 📸 02 | 🟡 |
+| VPC, Public Subnet | `10.0.0.0/16`, `10.0.1.0/24`, 퍼블릭 IP 자동 할당, `0.0.0.0/0 → IGW` 테이블 연결 | 📸 02, 04 | ✅ |
 | IGW를 VPC에 연결 | `b3-1-igw` Attached | 📸 03 | ✅ |
-| Route Table `0.0.0.0/0 → IGW` | 서브넷에 연결 | 📸 04 | ⬜ |
+| Route Table `0.0.0.0/0 → IGW` | `b3-1-rt-public`을 서브넷에 연결 | 📸 04 | ✅ |
 | 인스턴스 아웃바운드 | EC2에서 `curl -I https://example.com` 200 | 📸 08 | ⬜ |
 | EC2 1대, SSH 접속 | t3.micro, 내 IP에서 키로 접속 | 📸 06, 07 | ⬜ |
 | 웹 서버 실행, `curl localhost` 200 | Nginx `active (running)` | 📸 09 | ⬜ |

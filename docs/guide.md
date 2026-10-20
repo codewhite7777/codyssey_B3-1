@@ -9,7 +9,7 @@
 | 1 | [계정 준비](steps/01-account.md) | MFA, 결제 알림, 최소 권한 IAM 사용자 | 00a~00m, 01 | ✅ 완료 |
 | 2 | [VPC·Subnet](steps/02-vpc-subnet.md) | 격리된 네트워크와 서버 구역 | 02a~02d, 02 | ✅ 완료 |
 | 3 | [Internet Gateway](steps/03-igw.md) | 인터넷과 연결되는 정문 | 03 | ✅ 완료 |
-| 4 | [Route Table](steps/04-route-table.md) | `0.0.0.0/0 → IGW` 나가는 길 | 04 | ⬜ |
+| 4 | [Route Table](steps/04-route-table.md) | `0.0.0.0/0 → IGW` 나가는 길 | 04 | ✅ 완료 |
 | 5 | [Security Group](steps/05-security-group.md) | 80 누구나, 22 내 IP만 | 05 | ⬜ |
 | 6 | [EC2](steps/06-ec2.md) | Public Subnet에 서버 1대 | 06 | ⬜ |
 | 7 | [SSH·아웃바운드](steps/07-ssh.md) | 서버 접속, 서버 → 인터넷 확인 | 07, 08 | ⬜ |

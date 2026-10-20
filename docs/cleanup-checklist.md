@@ -7,7 +7,7 @@
 | 1 | VPC | `b3-1-vpc` | `vpc-07f1142c4fd787dde` | 2026-10-18 | [ ] |
 | 2 | Subnet | `b3-1-subnet-public` | `subnet-0d9ef94b777f72943` | 2026-10-20 | [ ] |
 | 3 | Internet Gateway | `b3-1-igw` | `igw-0d57e59b8c617f4e0` | 2026-10-20 | [ ] |
-| 4 | Route Table | `b3-1-rt-public` | `rtb-` | | [ ] |
+| 4 | Route Table | `b3-1-rt-public` | `rtb-03c65969cf2c394ad` | 2026-10-20 | [ ] |
 | 5 | Security Group | `b3-1-sg-web` | `sg-` | | [ ] |
 | 6 | Key Pair | `b3-1-key` | — | | [ ] |
 | 7 | EC2 | `b3-1-ec2-web` | `i-` | | [ ] |

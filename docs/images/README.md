@@ -24,7 +24,7 @@
 | `02d-subnet-public-ip.png` | 퍼블릭 IPv4 자동 할당 활성화 | [x] |
 | `02-vpc-subnet.png` | 서브넷 상세: CIDR·AZ·VPC·퍼블릭 IP 자동 할당 예 | [x] |
 | `03-igw-attached.png` | IGW 상태 Attached, VPC ID | [x] |
-| `04-route-table.png` | 경로(`0.0.0.0/0 → igw-`) + 서브넷 연결 탭 | [ ] |
+| `04-route-table.png` | 경로(`0.0.0.0/0 → igw-`) + 서브넷 연결 탭 | [x] |
 | `05-security-group.png` | 인바운드 규칙 2개 (80 전체, 22 내 IP/32) | [ ] |
 | `06-ec2-instance.png` | 인스턴스 Running, 서브넷, 퍼블릭 IP, t3.micro | [ ] |
 | `07-ssh-login.png` | 내 PC 터미널의 SSH 접속 성공 화면 | [ ] |
