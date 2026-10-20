@@ -13,7 +13,7 @@
 | 5 | [Security Group](steps/05-security-group.md) | 80 누구나, 22 내 IP만 | 05 | ✅ 완료 |
 | 6 | [EC2](steps/06-ec2.md) | Public Subnet에 서버 1대 | 06 | ✅ 완료 |
 | 7 | [SSH·아웃바운드](steps/07-ssh.md) | 서버 접속, 서버 → 인터넷 확인 | 07, 08 | ✅ 완료 |
-| 8 | [Nginx·`/health`](steps/08-nginx.md) | 웹 서버 설치, `OK` 응답 | 09 | ⬜ |
+| 8 | [Nginx·`/health`](steps/08-nginx.md) | 웹 서버 설치, `OK` 응답 | 09 | ✅ 완료 |
 | 9 | [외부 검증](steps/09-verify.md) | 내 PC에서 200 OK | 10 | ⬜ |
 | 10 | [트러블슈팅](steps/10-troubleshoot.md) | SG 80 빼서 timeout 재현 | 11, 12 | ⬜ |
 | 11 | [정리](steps/11-cleanup.md) | 안쪽부터 삭제 | 13 | ⬜ |

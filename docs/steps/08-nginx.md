@@ -65,13 +65,35 @@ curl -i http://localhost/health
 
 ## 4. ✍️ 실제 기록
 
-**상태**: ⬜ 진행 전
+**상태**: ✅ 완료 · **날짜**: 2026-10-20
+
+### 4-1. 한 일 한눈에 보기
+
+| 작업 | 실제로 한 일 | 이것이 하는 일 | 확인한 결과 | 📸 |
+|---|---|---|---|---|
+| ① 설치 | `sudo apt update` → `sudo apt install -y nginx` | 80 포트에서 요청을 받아 응답하는 웹 서버. 7단계에서 확인한 아웃바운드 길로 패키지를 받아 옴 | 설치 직후 자동 실행 | 09 |
+| ② `/health` 추가 | `/etc/nginx/sites-available/default`의 **활성 서버 블록**, `server_name _;` 바로 아래에 `location = /health { default_type text/plain; return 200 "OK\n"; }` | `/health`로 오면 파일을 찾지 않고 바로 `200`, 본문 `OK`. 그 밖의 주소는 기존 `location /`가 처리 | — | — |
+| ③ 검사·적용 | `sudo nginx -t` → `sudo systemctl reload nginx` | 문법 검사 후, 서버를 끄지 않고 바뀐 설정만 다시 읽음 | `syntax is ok`, `test is successful` | 09 |
+| ④ 확인 | `systemctl status nginx` / `curl -i http://localhost/health` | 서버 **안에서** Nginx와 `/health`가 동작하는지 확인 | **`active (running)`** / **`HTTP/1.1 200 OK`**, `Content-Type: text/plain`, 본문 `OK` | **09** |
+
+- `location = /health`의 `=`는 **경로가 정확히 `/health`일 때만** 걸린다. 정확히 일치하는 규칙이 `location /`보다 우선한다.
+- **헬스 체크**: 파일·DB와 상관없이 항상 같은 응답을 주므로 "서버까지 길이 열렸고 웹 서버가 살아 있다"만 깔끔하게 확인할 수 있다. 로드밸런서나 모니터링도 이런 주소를 주기적으로 찔러 본다.
+- 여기까지는 서버 **안**의 확인이다. 밖에서도 되는지는 9단계에서 내 PC로 확인한다.
+
+### 4-2. 막힌 점과 해결
 
 | 항목 | 내용 |
 |---|---|
-| 한 날짜 | |
-| 결과 | |
-| 막힌 점 | |
+| 증상 | 처음에 `location` 블록을 파일 아래쪽의 **주석 처리된 예시 블록**(`#server { ... server_name example.com;`) 사이에 붙여넣음 |
+| 원인 | `#`이 붙은 줄은 Nginx가 읽지 않음. 그 자리의 `location`은 어떤 `server { }`에도 속하지 않아 `nginx -t`에서 `"location" directive is not allowed here` 오류가 났을 것 |
+| 해결 | 저장하지 않고 나감(`Ctrl+X` → `N`) → 다시 열어 `Ctrl+W`로 `server_name _`를 찾아 **활성 서버 블록**에 넣음 → `nginx -t` 통과 |
+| 배운 점 | 설정 파일에는 `#` 예시가 많다. 넣을 위치는 `#`이 없는 블록인지 먼저 확인하고, 적용 전에 반드시 `nginx -t` |
+
+### 4-3. 스크린샷
+
+**📸 09 서버 안 확인**: `nginx -t` 통과, `active (running)`, `curl -i http://localhost/health` → `HTTP/1.1 200 OK`, `OK`
+
+![localhost 200](../images/09-localhost-200.png)
 
 ---
 

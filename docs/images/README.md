@@ -32,7 +32,7 @@
 | `06c-ec2-volume.png` | EBS 볼륨, 종료 시 삭제 예 | [x] |
 | `07-ssh-login.png` | 내 PC 터미널의 SSH 접속 성공 화면 | [x] |
 | `08-outbound-curl.png` | EC2 안에서 `curl -I https://example.com` | [x] |
-| `09-localhost-200.png` | `systemctl status nginx` + `curl -i http://localhost` | [ ] |
+| `09-localhost-200.png` | `systemctl status nginx` + `curl -i http://localhost/health` | [x] |
 | `10-external-health.png` | **내 PC**에서 `curl -i http://<퍼블릭IP>/health` | [ ] |
 | `11-troubleshoot-before.png` | 장애 상황 (timeout, SG 규칙) | [ ] |
 | `12-troubleshoot-after.png` | 조치 후 정상 응답 | [ ] |
