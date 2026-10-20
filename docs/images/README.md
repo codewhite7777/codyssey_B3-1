@@ -42,7 +42,8 @@
 | `13-ec2-terminate-confirm.png` | EC2 종료 확인 창 | [x] |
 | `13a-ec2-terminated.png` | EC2 상태 종료됨 | [x] |
 | `13b-ebs-volumes-empty.png` | EBS 볼륨 없음 | [x] |
-| `13c~` | 나머지 정리 확인 (진행 중) | [ ] |
+| `13c-eip-empty.png` | 탄력적 IP 없음 (할당 안 했지만 과금 요인이라 확인) | [x] |
+| `13d~` | 나머지 정리 확인 (진행 중) | [ ] |
 
 퍼블릭 IP는 EC2를 Stop/Start하면 바뀐다. IP가 보이는 06, 07, 10은 같은 날 한 번에 찍는다.
 

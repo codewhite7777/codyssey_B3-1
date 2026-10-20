@@ -16,7 +16,7 @@
 | 8 | [Nginx·`/health`](steps/08-nginx.md) | 웹 서버 설치, `OK` 응답 | 09a, 09b, 09 | ✅ 완료 |
 | 9 | [외부 검증](steps/09-verify.md) | 내 PC에서 200 OK | 10, 10b | ✅ 완료 |
 | 10 | [트러블슈팅](steps/10-troubleshoot.md) | 실제 장애(휴대폰 Chrome) 진단·기록 | 11 | ✅ 완료 |
-| 11 | [정리](steps/11-cleanup.md) | 안쪽부터 삭제 | 13, 13a~ | 🟡 진행 중 (EC2·EBS 완료) |
+| 11 | [정리](steps/11-cleanup.md) | 안쪽부터 삭제 | 13, 13a~ | 🟡 진행 중 (EC2·EBS·EIP 완료) |
 
 상태: ⬜ 진행 전 · 🟡 진행 중 · ✅ 완료
 
