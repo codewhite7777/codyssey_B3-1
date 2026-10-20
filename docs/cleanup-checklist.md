@@ -7,7 +7,7 @@
 | 1 | VPC | `b3-1-vpc` | `vpc-07f1142c4fd787dde` | 2026-10-18 | [ ] |
 | 2 | Subnet | `b3-1-subnet-public` | `subnet-0d9ef94b777f72943` | 2026-10-20 | [x] 삭제 |
 | 3 | Internet Gateway | `b3-1-igw` | `igw-0d57e59b8c617f4e0` | 2026-10-20 | [ ] |
-| 4 | Route Table | `b3-1-rt-public` | `rtb-03c65969cf2c394ad` | 2026-10-20 | [ ] |
+| 4 | Route Table | `b3-1-rt-public` | `rtb-03c65969cf2c394ad` | 2026-10-20 | [x] 삭제 |
 | 5 | Security Group | `b3-1-sg-web` | `sg-0b70263b7d5833f46` | 2026-10-20 | [x] 삭제 |
 | 6 | Key Pair | `b3-1-key` | — | 2026-10-20 | [x] AWS·내 PC 모두 삭제 |
 | 7 | EC2 | `b3-1-ec2-web` | `i-04f3b8c675688f133` | 2026-10-20 | [x] 종료됨 |
@@ -28,7 +28,7 @@
 - [x] 4. **Key Pair** `b3-1-key` 삭제 (로컬 `.pem` 파일도 삭제, `known_hosts` 기록 제거)
 - [x] 5. **Security Group** `b3-1-sg-web` 삭제
 - [x] 6. **Subnet** 삭제
-- [ ] 7. **Route Table** `b3-1-rt-public` 삭제
+- [x] 7. **Route Table** `b3-1-rt-public` 삭제
 - [ ] 8. **Internet Gateway** VPC에서 Detach → 삭제
 - [ ] 9. **VPC** `b3-1-vpc` 삭제
 
