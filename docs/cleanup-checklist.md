@@ -8,7 +8,7 @@
 | 2 | Subnet | `b3-1-subnet-public` | `subnet-0d9ef94b777f72943` | 2026-10-20 | [ ] |
 | 3 | Internet Gateway | `b3-1-igw` | `igw-0d57e59b8c617f4e0` | 2026-10-20 | [ ] |
 | 4 | Route Table | `b3-1-rt-public` | `rtb-03c65969cf2c394ad` | 2026-10-20 | [ ] |
-| 5 | Security Group | `b3-1-sg-web` | `sg-0b70263b7d5833f46` | 2026-10-20 | [ ] |
+| 5 | Security Group | `b3-1-sg-web` | `sg-0b70263b7d5833f46` | 2026-10-20 | [x] 삭제 |
 | 6 | Key Pair | `b3-1-key` | — | 2026-10-20 | [x] AWS·내 PC 모두 삭제 |
 | 7 | EC2 | `b3-1-ec2-web` | `i-04f3b8c675688f133` | 2026-10-20 | [x] 종료됨 |
 | 8 | EBS (루트 볼륨) | — | `vol-0fab396aa4c25564a` | 2026-10-20 | [x] 자동 삭제 |
@@ -26,7 +26,7 @@
 - [x] 2. **EBS** 볼륨 목록에 `vol-0fab396aa4c25564a`가 없는지 확인 (미사용 볼륨 포함 0개)
 - [x] 3. **Elastic IP** 목록이 비어 있는지 확인 → 할당하지 않음. 쓰지 않았어도 연결 안 된 EIP는 과금되므로 **직접 확인함** ("이 리전에서 탄력적 IP 주소를 찾을 수 없음", 📸 13c)
 - [x] 4. **Key Pair** `b3-1-key` 삭제 (로컬 `.pem` 파일도 삭제, `known_hosts` 기록 제거)
-- [ ] 5. **Security Group** `b3-1-sg-web` 삭제
+- [x] 5. **Security Group** `b3-1-sg-web` 삭제
 - [ ] 6. **Subnet** 삭제
 - [ ] 7. **Route Table** `b3-1-rt-public` 삭제
 - [ ] 8. **Internet Gateway** VPC에서 Detach → 삭제
