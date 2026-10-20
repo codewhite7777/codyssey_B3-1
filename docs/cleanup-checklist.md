@@ -14,7 +14,7 @@
 | 8 | EBS (루트 볼륨) | — | `vol-0fab396aa4c25564a` | 2026-10-20 | [ ] |
 | 9 | IAM 사용자 | `b3-1-user` | — | | (평가 후 정리) |
 
-모든 리소스에 태그 `Project=b3-1`을 달았다.
+태그 `Project=b3-1`은 VPC, Subnet, IGW, Route Table, SG, Key Pair, EC2에 달았다. **EBS 루트 볼륨에는 달지 않았으므로** 정리할 때 위 볼륨 ID로 확인한다(EC2 종료 시 함께 삭제되도록 설정됨).
 
 ## 2. 정리 순서와 확인
 
