@@ -55,7 +55,9 @@
 | `13l-subnet-deleted.png` | 서브넷 삭제 완료, 기본 서브넷 4개만 남음 | [x] |
 | `13m0`~`13m2` | 라우팅 테이블: 오래된 화면, 삭제 막힘, 새로 고침 후 확인 창 | [x] |
 | `13m-rt-deleted.png` | 라우팅 테이블 삭제 완료, 기본 2개만 남음 | [x] |
-| `13n~` | 나머지 정리 확인 (진행 중) | [ ] |
+| `13n0-igw-detach-menu.png` | IGW 분리 메뉴 (삭제는 비활성) | [x] |
+| `13n-igw-detached.png` | IGW Detached | [x] |
+| `13o~` | 나머지 정리 확인 (진행 중) | [ ] |
 | `keypair.svg`, `cleanup_order.svg` | 설명 그림: 키 페어 역할, 정리 순서 | [x] |
 
 퍼블릭 IP는 EC2를 Stop/Start하면 바뀐다. IP가 보이는 06, 07, 10은 같은 날 한 번에 찍는다.
