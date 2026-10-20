@@ -42,3 +42,5 @@
 | `13-cleanup.png` | EC2 Terminated, 볼륨 0개, VPC 목록 | [ ] |
 
 퍼블릭 IP는 EC2를 Stop/Start하면 바뀐다. IP가 보이는 06, 07, 10은 같은 날 한 번에 찍는다.
+
+`focus/` 폴더: README 4장 "과정 따라보기"에서 쓰는 확대 이미지. 위 스크린샷의 핵심 부분만 잘라낸 것이다.
