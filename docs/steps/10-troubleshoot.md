@@ -27,7 +27,7 @@
 | 5 | 같은 휴대폰·LTE에서 **삼성 인터넷** | **OK** | **Chrome에서만** 실패로 확정 |
 | 6 | 조치 | 서버는 바꾸지 않음, **443 열지 않음** | 다른 브라우저로 접속 |
 
-보고서 전문과 근거 이미지: [troubleshooting.md](../troubleshooting.md)
+보고서 전문(접근 원칙, 시간순 과정과 각 단계의 이유, 원인 확정/추정 구분, 조치 선택 이유): [troubleshooting.md](../troubleshooting.md)
 
 ![휴대폰 Chrome과 삼성 인터넷 비교](../images/11-troubleshoot-mobile-chrome.png)
 

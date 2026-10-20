@@ -37,7 +37,8 @@
 | `09-localhost-200.png` | `systemctl status nginx` + `curl -i http://localhost/health` | [x] |
 | `10-external-health.png` | **내 PC**에서 `curl -i http://<퍼블릭IP>/health` | [x] |
 | `10b-external-browser.png` | 브라우저 `/health` → OK | [x] |
-| `11-troubleshoot-mobile-chrome.png` | 트러블슈팅: 휴대폰 Chrome timeout vs 삼성 인터넷 OK | [x] |
+| `11-troubleshoot-mobile-chrome.png` | 트러블슈팅 요약: 휴대폰 Chrome timeout vs 삼성 인터넷 OK | [x] |
+| `11a`~`11e` | 트러블슈팅 과정: Chrome 설정 켜짐·끔, timeout, 세부정보, 삼성 인터넷 OK | [x] |
 | `13-cleanup.png` | EC2 Terminated, 볼륨 0개, VPC 목록 | [ ] |
 
 퍼블릭 IP는 EC2를 Stop/Start하면 바뀐다. IP가 보이는 06, 07, 10은 같은 날 한 번에 찍는다.
