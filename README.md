@@ -51,7 +51,7 @@
 | IGW를 VPC에 연결 | `b3-1-igw` Attached | 📸 03 | ✅ |
 | Route Table `0.0.0.0/0 → IGW` | `b3-1-rt-public`을 서브넷에 연결 | 📸 04 | ✅ |
 | 인스턴스 아웃바운드 | EC2에서 `curl -I https://example.com` 200 | 📸 08 | ⬜ |
-| EC2 1대, SSH 접속 | t3.micro, 내 IP에서 키로 접속 | 📸 06, 07 | ⬜ |
+| EC2 1대, SSH 접속 | t3.micro, 내 IP에서 키로 접속 | 📸 06, 07 | 🟡 |
 | 웹 서버 실행, `curl localhost` 200 | Nginx `active (running)` | 📸 09 | ⬜ |
 | SG 필요 포트만 | 80 ← `0.0.0.0/0`, 22 ← 내 IP `/32`, 전체 포트 규칙 없음 | 📸 05 | ✅ |
 | IAM 최소 권한 | EC2 액션만, 생성·삭제는 서울 리전만, S3/RDS·관리자 권한 없음 | 📸 01, [iam-policy.json](docs/iam-policy.json) | ✅ |
@@ -59,7 +59,7 @@
 | 아키텍처 다이어그램 | VPC, Subnet, IGW, Route Table, SG, EC2, 요청 흐름 | [architecture.png](docs/architecture.png) | ✅ |
 | 트러블슈팅 보고서 | SG 80 제거 → timeout → 근거로 원인 확인 → 복구 | 📸 11, 12, [troubleshooting.md](docs/troubleshooting.md) | ⬜ |
 | 리소스 정리 5종 | EC2, EBS, Elastic IP(할당 안 함), IGW, VPC | 📸 13, [cleanup-checklist.md](docs/cleanup-checklist.md) | ⬜ |
-| 제약: 루트 미사용, 서울 리전, 프리 티어 | 루트는 IAM 사용자 생성까지만, t3.micro(크레딧 Standard), EIP·NAT·ALB 만들지 않음 | 📸 01, 06 | ⬜ |
+| 제약: 루트 미사용, 서울 리전, 프리 티어 | 루트는 IAM 사용자 생성까지만, t3.micro(크레딧 Standard), EIP·NAT·ALB 만들지 않음 | 📸 01, 06, 06b | ✅ |
 
 ## 4. 문서
 
