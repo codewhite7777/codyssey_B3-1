@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" font-family="-apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', 'Noto Sans CJK KR', sans-serif"><defs><marker id="ah2C2C2A" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2C2C2A"/></marker><marker id="ah185FA5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#185FA5"/></marker><marker id="ah0F6E56" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0F6E56"/></marker><marker id="ah3C3489" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3C3489"/></marker><marker id="ah993C1D" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#993C1D"/></marker><marker id="ah5F5E5A" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5F5E5A"/></marker></defs><rect width="960" height="560" fill="#FFFFFF"/><text x="30" y="36" font-size="18" fill="#2C2C2A" font-weight="bold" text-anchor="start">정리 순서: 안쪽(다른 것이 쓰고 있는 것)부터 바깥으로</text>
+<text x="30" y="60" font-size="14" fill="#5F5E5A" font-weight="normal" text-anchor="start">어떤 리소스를 다른 리소스가 쓰고 있으면 AWS가 삭제를 막는다. 그래서 만든 순서의 반대로 지운다</text>
+<rect x="20" y="80" width="920" height="420" rx="8" fill="#FAFAF8" stroke="#5F5E5A" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="36" y="104" font-size="14" fill="#5F5E5A" font-weight="bold" text-anchor="start">서울 리전 ap-northeast-2</text>
+<rect x="40" y="118" width="610" height="366" rx="8" fill="#EAF2FB" stroke="#185FA5" stroke-width="2"/>
+<circle cx="64" cy="142" r="12" fill="#185FA5"/>
+<text x="64" y="147" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">9</text>
+<text x="84" y="147" font-size="15" fill="#185FA5" font-weight="bold" text-anchor="start">VPC  b3-1-vpc  10.0.0.0/16</text>
+<text x="84" y="168" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="start">마지막. 기본 라우팅 테이블·기본 SG·NACL은 함께 자동 삭제</text>
+<rect x="64" y="184" width="380" height="284" rx="8" fill="#E6F4EE" stroke="#0F6E56" stroke-width="2"/>
+<circle cx="88" cy="208" r="12" fill="#0F6E56"/>
+<text x="88" y="213" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">6</text>
+<text x="108" y="213" font-size="14" fill="#0F6E56" font-weight="bold" text-anchor="start">Subnet  10.0.1.0/24</text>
+<rect x="88" y="228" width="332" height="224" rx="8" fill="#FFFFFF" stroke="#993C1D" stroke-width="2" stroke-dasharray="6 4"/>
+<circle cx="112" cy="252" r="12" fill="#993C1D"/>
+<text x="112" y="257" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">5</text>
+<text x="132" y="257" font-size="14" fill="#993C1D" font-weight="bold" text-anchor="start">SG  b3-1-sg-web</text>
+<text x="132" y="276" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="start">EC2가 완전히 종료된 뒤에 삭제 가능</text>
+<rect x="112" y="292" width="284" height="70" rx="8" fill="#FFFFFF" stroke="#2C2C2A" stroke-width="2"/>
+<circle cx="136" cy="316" r="12" fill="#2C2C2A"/>
+<text x="136" y="321" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">1</text>
+<text x="156" y="321" font-size="14" fill="#2C2C2A" font-weight="bold" text-anchor="start">EC2  b3-1-ec2-web</text>
+<text x="156" y="344" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="start">종료(Terminate). 중지가 아님</text>
+<rect x="112" y="372" width="284" height="64" rx="8" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1.5"/>
+<circle cx="136" cy="396" r="12" fill="#5F5E5A"/>
+<text x="136" y="401" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">2</text>
+<text x="156" y="401" font-size="14" fill="#2C2C2A" font-weight="bold" text-anchor="start">EBS 루트 볼륨</text>
+<text x="156" y="422" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="start">EC2와 함께 자동 삭제 → 목록 확인</text>
+<rect x="466" y="270" width="164" height="96" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="1.5"/>
+<circle cx="488" cy="294" r="12" fill="#185FA5"/>
+<text x="488" y="299" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">7</text>
+<text x="506" y="299" font-size="14" fill="#185FA5" font-weight="bold" text-anchor="start">Route Table</text>
+<text x="482" y="322" font-size="12" fill="#2C2C2A" font-weight="normal" text-anchor="start">b3-1-rt-public</text>
+<text x="482" y="342" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="start">서브넷이 지워져</text>
+<text x="482" y="358" font-size="12" fill="#5F5E5A" font-weight="normal" text-anchor="start">연결이 풀린 뒤</text>
+<line x1="444" y1="318" x2="466" y2="318" stroke="#185FA5" stroke-width="1.5" stroke-dasharray="4 4"/>
+<rect x="560" y="186" width="150" height="66" rx="8" fill="#FFFFFF" stroke="#185FA5" stroke-width="2"/>
+<circle cx="582" cy="210" r="12" fill="#185FA5"/>
+<text x="582" y="215" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">8</text>
+<text x="600" y="215" font-size="14" fill="#185FA5" font-weight="bold" text-anchor="start">IGW</text>
+<text x="576" y="238" font-size="12" fill="#2C2C2A" font-weight="normal" text-anchor="start">분리(Detach) → 삭제</text>
+<rect x="680" y="290" width="240" height="76" rx="8" fill="#EEEDFE" stroke="#3C3489" stroke-width="1.5"/>
+<circle cx="702" cy="314" r="12" fill="#3C3489"/>
+<text x="702" y="319" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">4</text>
+<text x="722" y="319" font-size="14" fill="#3C3489" font-weight="bold" text-anchor="start">키 페어  b3-1-key</text>
+<text x="696" y="346" font-size="12" fill="#2C2C2A" font-weight="normal" text-anchor="start">+ 내 PC의 .pem 파일</text>
+<rect x="680" y="380" width="240" height="76" rx="8" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="1.5"/>
+<circle cx="702" cy="404" r="12" fill="#5F5E5A"/>
+<text x="702" y="409" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">3</text>
+<text x="722" y="409" font-size="14" fill="#2C2C2A" font-weight="bold" text-anchor="start">탄력적 IP</text>
+<text x="696" y="436" font-size="12" fill="#2C2C2A" font-weight="normal" text-anchor="start">만들지 않았지만 없음을 확인</text>
+<circle cx="42" cy="526" r="12" fill="#2C2C2A"/>
+<text x="42" y="531" font-size="13" fill="#FFFFFF" font-weight="bold" text-anchor="middle">10</text>
+<text x="62" y="531" font-size="13" fill="#2C2C2A" font-weight="normal" text-anchor="start">마지막으로 EC2 Global View에서 모든 리전에 남은 인스턴스·VPC가 없는지 확인 (기본 VPC는 남김)</text></svg>

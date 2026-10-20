@@ -43,7 +43,12 @@
 | `13a-ec2-terminated.png` | EC2 상태 종료됨 | [x] |
 | `13b-ebs-volumes-empty.png` | EBS 볼륨 없음 | [x] |
 | `13c-eip-empty.png` | 탄력적 IP 없음 (할당 안 했지만 과금 요인이라 확인) | [x] |
-| `13d~` | 나머지 정리 확인 (진행 중) | [ ] |
+| `13d-keypair-delete.png` | 키 페어 삭제 메뉴 | [x] |
+| `13e-keypair-empty.png` | 키 페어 없음 | [x] |
+| `13f-pem-removed.png` | 내 PC `.pem` 삭제 | [x] |
+| `13g-known-hosts.png` | `ssh-keygen -R`로 서버 지문 기록 제거 | [x] |
+| `13h~` | 나머지 정리 확인 (진행 중) | [ ] |
+| `keypair.svg`, `cleanup_order.svg` | 설명 그림: 키 페어 역할, 정리 순서 | [x] |
 
 퍼블릭 IP는 EC2를 Stop/Start하면 바뀐다. IP가 보이는 06, 07, 10은 같은 날 한 번에 찍는다.
 
